@@ -51,6 +51,11 @@ public class ChessTimerGUI extends JFrame implements ActionListener {
             case "Traditional":
                 timer1 = timer2 = 3600;
                 break;
+            default:
+                timer1 = scanner.nextInt();
+                timer2 = scanner.nextInt();
+                break;
+
         }
 
         isTimerRunning = false;
