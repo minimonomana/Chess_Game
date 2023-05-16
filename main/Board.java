@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JPanel;
 
@@ -22,6 +23,8 @@ public class Board extends JPanel{
 	int rows = 8;
 	Players p1;
 	//Players p2;
+	
+	Stack<Move> movesList = new Stack<Move>();
 	
 	
 	public Board(){
@@ -87,6 +90,10 @@ public class Board extends JPanel{
 	
 	public void move(Move m) {
 		if (p1.turn() == m.piece.iswhite) {
+			
+			if (m.piece.name.equals("King")) {
+				castle(m);
+			}
 			m.piece.col = m.newcol;
 			m.piece.row = m.newrow;
 			m.piece.xpos = m.newcol * tileSize;
@@ -94,40 +101,37 @@ public class Board extends JPanel{
 			m.piece.hasMoved = true;
 			
 			capture(m);
+			
+			
 			p1.nextTurn(!p1.turn());
 		}
 		
 	}
 	
-	public void castle(Move m, int i) {
-		if (m.piece instanceof King) {
-			King king = (King) this.get(m.piece.row, 3);
-			Rook rook = (Rook) this.get(m.piece.row, i);
-			if (king.canCastle(this, rook)) {
-				if (i == 0) {
-					king.col = 1;
-					king.row = m.newrow;
-					king.xpos = tileSize;
-					king.ypos = m.newrow * tileSize;
-					
-					rook.col = 2;
-					rook.row = m.newrow;
-					rook.xpos = 2 * tileSize;
-					rook.ypos = m.newrow * tileSize;
+	public void undo() {
+		
+		
+	}
+	
+	public void castle(Move m) {
+		if (p1.turn() == m.piece.iswhite) {
+			
+			if ((m.newrow == m.piece.row) && (Math.abs(m.newcol - m.piece.col) == 2)) {
+				Piece rook;
+				if (m.piece.col < m.newcol) {
+					rook = this.get(m.piece.row, 7);
+					rook.col = m.piece.col + 1;
 				}
-				else if (i == 7) {
-					king.col = 5;
-					king.row = m.newrow;
-					king.xpos = 5 * tileSize;
-					king.ypos = m.newrow * tileSize;
-					
-					rook.col = 4;
-					rook.row = m.newrow;
-					rook.xpos = 4 * tileSize;
-					rook.ypos = m.newrow * tileSize;
+				else {
+					rook = this.get(m.piece.row, 0);
+					rook.col = m.piece.col - 1;
 				}
+				rook.xpos = rook.col * tileSize;
+				p1.nextTurn(!p1.turn());
 			}
+			
 		}
+		
 	}
 	
 	public void capture(Move m) {
@@ -135,11 +139,23 @@ public class Board extends JPanel{
 	}
 	
 	public boolean isValidMove(Move move) {
+
 		if (p1.turn() == move.piece.iswhite) {
+			
+			if (move.piece.name.equals("King")) {
+				Piece king;
+				king = move.piece;
+				if (king.canCastle(king.row, king.col - 2) || king.canCastle(king.row, king.col + 2)) {
+					return true;
+				}
+			}
+			
 			if (move.piece.canMove(move.newrow, move.newcol)) {
-				System.out.printf("%d %d can move to %d %d\n", move.piece.row, move.piece.col, move.newrow, move.newcol);
+				System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
 				return true;
 			}
+			
+
 		}
 		
 		return false;
@@ -148,16 +164,19 @@ public class Board extends JPanel{
 	public boolean checkAttacked(int row, int col, boolean white) {
 		
 		for (Piece piece: pieceList) {
-			System.out.println(pieceList.size());
-			if (isValidMove(new Move(this, piece, row, col)) && piece.iswhite != white) {
-				System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
-				return true;
+			System.out.println(piece.name);
+			if (piece.iswhite != white) {
+				if (piece.canAttack(row, col)) {
+					System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
+					return true;
+				}
 			}
-			else {
-				return false;
-			}
+			
 		}
+		
 		return false;
+		
+		
 	}
 	
 	public void paintComponent(Graphics g) {

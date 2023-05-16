@@ -14,6 +14,8 @@ public class Rook extends Piece{
 		
 		this.iswhite = iswhite;
 		
+		this.name = "Rook";
+		
 		this.sprite= sheet.getSubimage(4 * sheetscale, iswhite ? 0 : sheetscale, sheetscale, sheetscale).getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 		
 	}
@@ -89,4 +91,9 @@ public class Rook extends Piece{
 		}
 		return false;
 	}
+	
+	public boolean canAttack(int row, int col) {
+		return canMove(row, col);
+	}
+	
 }

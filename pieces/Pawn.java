@@ -15,6 +15,8 @@ public class Pawn extends Piece{
 		
 		this.iswhite = iswhite;
 		
+		this.name = "Pawn";
+		
 		this.sprite= sheet.getSubimage(5 * sheetscale, iswhite ? 0 : sheetscale, sheetscale, sheetscale).getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 		
 	}
@@ -76,6 +78,10 @@ public class Pawn extends Piece{
 	    }
 	    
 	    return false;
+	}
+	
+	public boolean canAttack(int row, int col) {
+		return (Math.abs(this.row - row) == 1 && Math.abs(this.col - col) == 1);
 	}
 
 

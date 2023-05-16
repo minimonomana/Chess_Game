@@ -14,6 +14,8 @@ public class Queen extends Piece{
 		
 		this.iswhite = iswhite;
 		
+		this.name = "Queen";
+		
 		this.sprite= sheet.getSubimage(1 * sheetscale, iswhite ? 0 : sheetscale, sheetscale, sheetscale).getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 		
 	}
@@ -140,6 +142,10 @@ public class Queen extends Piece{
 			}
 		}
 		return false;
+	}
+	
+	public boolean canAttack(int row, int col) {
+		return canMove(row, col);
 	}
 
 }

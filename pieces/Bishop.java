@@ -14,6 +14,8 @@ public class Bishop extends Piece{
 		
 		this.iswhite = iswhite;
 		
+		this.name = "Bishop";
+		
 		this.sprite= sheet.getSubimage(2 * sheetscale, iswhite ? 0 : sheetscale, sheetscale, sheetscale).getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 		
 	}
@@ -115,6 +117,10 @@ public class Bishop extends Piece{
 			}
 		}
 		return false;
+	}
+	
+	public boolean canAttack(int row, int col) {
+		return canMove(row, col);
 	}
 
 }

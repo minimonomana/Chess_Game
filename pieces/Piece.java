@@ -16,6 +16,7 @@ public class Piece {
 	
 	public boolean iswhite;
 	public boolean hasMoved = false;
+	public String name;
 	
 	BufferedImage sheet;
 	{
@@ -41,12 +42,16 @@ public class Piece {
 		return true;
 	}
 	
+	public boolean canAttack(int r, int c) {
+		return true;
+	}
+	
 	public void paint(Graphics2D g2d) {
 		g2d.drawImage(sprite, xpos, ypos, null);
 		
 	}
 
-	public boolean canCastle(Board board, Rook rook) {
+	public boolean canCastle(int newrow, int newcol) {
 		return false;
 	}
 

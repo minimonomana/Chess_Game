@@ -14,6 +14,8 @@ public class King extends Piece{
 		
 		this.iswhite = iswhite;
 		
+		this.name = "King";
+		
 		this.sprite= sheet.getSubimage(0 * sheetscale, iswhite ? 0 : sheetscale, sheetscale, sheetscale).getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 		
 	}
@@ -33,14 +35,11 @@ public class King extends Piece{
 		}
 		else {
 			if (board.get(x2, y2) == null ||(board.get(x2, y2) != null && board.get(x2, y2).iswhite != this.iswhite)) {
-				if (!board.checkAttacked(x2, y2, this.iswhite)) {
-					return true;
-				}
-				else if(canCastle(board, new Rook(board, 0, y2, this.iswhite)) || canCastle(board, new Rook(board, 7, y2, this.iswhite))) {
-					return true;
+				if (board.checkAttacked(x2, y2, this.iswhite)) {
+					return false;
 				}
 				else {
-					return false;
+					return true;
 				}
 			}
 			else {
@@ -49,46 +48,46 @@ public class King extends Piece{
 		}
 	}
 	
-	public boolean canCastle(Board board, Rook rook) {
-		if (this.hasMoved || rook.hasMoved) {
-			return false;
-		}
-		else if (board.checkAttacked(this.row, this.col, this.iswhite)) {
-			return false;
-		}
-		else {
-			if (rook.row == 0) {
-				int y = rook.col;
-				if (board.get(y, 1) != null || board.get(y, 1) != null){
-					return false;
-				}
-				else {
-					if(board.checkAttacked(y, 2, this.iswhite)) {
+	public boolean canCastle(int newrow, int newcol) {
+		
+		if (this.row == newrow) {
+			Piece rook;
+			if (newcol < this.col) {
+				rook = board.get(newrow, 0);
+				if (rook != null && !rook.hasMoved && !hasMoved) {
+					if (board.checkAttacked(newrow, 3, this.iswhite) || board.checkAttacked(newrow, 2, this.iswhite)) {
 						return false;
 					}
 					else {
-						return true;
-					}
-				}
-			}
-			if (rook.row == 7) {
-				int y = rook.col;
-				if (board.get(y, 4) != null || board.get(y, 5) != null || board.get(y, 6) != null){
-					return false;
-				}
-				else {
-					if(board.checkAttacked(y, 4, this.iswhite)) {
-						return false;
-					}
-					else {
-						return true;
+						if (board.get(newrow, 1) != null || board.get(newrow, 2) != null || board.get(newrow, 3) != null){
+							return false;
+						}
+						
 					}
 				}
 			}
 			else {
-				return false;
+				rook = board.get(newrow, 7);
+				if (rook != null && !rook.hasMoved && !hasMoved) {
+					if (board.checkAttacked(newrow, 5, this.iswhite) || board.checkAttacked(newrow, 6, this.iswhite)) {
+						return false;
+					}
+					else {
+						if (board.get(newrow, 5) != null || board.get(newrow, 6) != null){
+							return false;
+						}
+						
+					}
+				}
 			}
 		}
+		
+		return false;
+		
+	}
+	
+	public boolean canAttack(int row, int col) {
+		return canMove(row, col);
 	}
 
 }
