@@ -6,18 +6,18 @@ import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class ChessTimerGUI extends JFrame implements ActionListener {
-    private int timer1;
+    private int timer1; // time for each player's timer
     private int timer2;
-    private int startTime1;
+    private int startTime1; // start and end time of each player's turn
     private int endTime1;
     private int startTime2;
     private int endTime2;
-    private boolean isTimerRunning;
-    private boolean isTimer1Active;
+    private boolean isTimerRunning; // indicates whether the timer is currently running or not
+    private boolean isTimer1Active; // indicates which player's timer is currently active
     private boolean isTimer2Active;
-    private JLabel labelTimer1;
+    private JLabel labelTimer1; // JLabel objects to display the timer values for each player
     private JLabel labelTimer2;
-    private Timer timer1Obj;
+    private Timer timer1Obj; // Timer objects to control the timing functionality
     private Timer timer2Obj;
 
     public ChessTimerGUI() {
@@ -85,6 +85,8 @@ public class ChessTimerGUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // Handles the action performed when the "Start/Stop" button is clicked.
+    // Starts or stops the timers based on the current player's turn.
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Start/Stop")) {
             // Start or stop timer for current player
@@ -108,6 +110,8 @@ public class ChessTimerGUI extends JFrame implements ActionListener {
                 isTimerRunning = false;
             }
 
+            // Use the system's current time to calculate the elapsed time for each player's turn.
+            // It assumes that the time is measured in seconds.
             if (isTimer1Active) {
                 timer1Obj = new Timer(1000, new TimerAction(timer1, labelTimer1));
                 startTime1 = (int) System.currentTimeMillis() / 1000;
@@ -121,12 +125,15 @@ public class ChessTimerGUI extends JFrame implements ActionListener {
         }
     }
 
+    // Formats the given time in minutes and seconds
     private String formatTime(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    // Inner class implementing ActionListener interface
+    // Update the timer label and check if player's time has run out
     private class TimerAction implements ActionListener {
         private int time;
         private JLabel label;
@@ -147,6 +154,7 @@ public class ChessTimerGUI extends JFrame implements ActionListener {
                     timer2Obj.stop();
                 }
                 isTimerRunning = false;
+                // Display a message dialog when a player's time runs out, indicating the winner of the game.
                 JOptionPane.showMessageDialog(null, isTimer1Active ? "Player 2 wins!" : "Player 1 wins!");
             }
         }
