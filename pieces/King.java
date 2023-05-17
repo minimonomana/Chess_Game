@@ -1,7 +1,11 @@
 package pieces;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import main.Board;
+import main.Move;
 
 public class King extends Piece{
 	public King(Board board, int row, int col, boolean iswhite) {
@@ -84,6 +88,114 @@ public class King extends Piece{
 		
 		return false;
 		
+	}
+
+	public boolean isCheckMated() {
+		boolean isAttacked = false;
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				if (board.get(r, c) != null) {
+					Piece attacker = board.get(r, c);
+					if (attacker.canAttack(row, col) && attacker.iswhite != iswhite) {
+						isAttacked = true;
+						break;
+					}
+				}
+			}
+		}
+		if (!isAttacked) {
+			return false;
+		}
+		ArrayList<Piece> curPieceList = board.pieceList;
+		for (Piece defender : curPieceList) {
+			if (defender.iswhite == iswhite) {
+				for (int r1 = 0; r1 < 8; r1++) {
+					for (int c1 = 0; c1 < 8; c1++) {
+						if (defender.canMove(r1, c1)) {
+							Piece backupStart = defender;
+							Piece backupEnd = board.get(r1, c1);
+							defender.row = r1;
+							defender.col = c1;
+							if (board.get(r1, c1) != null) {
+								board.pieceList.remove(board.get(r1, c1));
+							}
+							isAttacked = false;
+							for (Piece attacker : board.pieceList) {
+								if (attacker.iswhite != iswhite) {
+									if (attacker.canAttack(row, col)) {
+										isAttacked = true;
+										break;
+									}
+								}
+							}
+							defender.row = backupStart.row;
+							defender.col = backupStart.col;
+							if (backupEnd != null) {
+								board.pieceList.add(backupEnd);
+							}
+							if (!isAttacked) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean isStaleMated() {
+		boolean isAttacked = false;
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				if (board.get(r, c) != null) {
+					Piece attacker = board.get(r, c);
+					if (attacker.canAttack(row, col) && attacker.iswhite != iswhite) {
+						isAttacked = true;
+						break;
+					}
+				}
+			}
+		}
+		if (isAttacked) {
+			return false;
+		}
+		ArrayList<Piece> curPieceList = board.pieceList;
+		for (Piece defender : curPieceList) {
+			if (defender.iswhite == iswhite) {
+				for (int r1 = 0; r1 < 8; r1++) {
+					for (int c1 = 0; c1 < 8; c1++) {
+						if (defender.canMove(r1, c1)) {
+							Piece backupStart = defender;
+							Piece backupEnd = board.get(r1, c1);
+							defender.row = r1;
+							defender.col = c1;
+							if (board.get(r1, c1) != null) {
+								board.pieceList.remove(board.get(r1, c1));
+							}
+							isAttacked = false;
+							for (Piece attacker : board.pieceList) {
+								if (attacker.iswhite != iswhite) {
+									if (attacker.canAttack(row, col)) {
+										isAttacked = true;
+										break;
+									}
+								}
+							}
+							defender.row = backupStart.row;
+							defender.col = backupStart.col;
+							if (backupEnd != null) {
+								board.pieceList.add(backupEnd);
+							}
+							if (!isAttacked) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	public boolean canAttack(int row, int col) {
