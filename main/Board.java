@@ -73,7 +73,7 @@ public class Board extends JPanel{
 		
 	}
 	
-	ArrayList<Piece> pieceList = new ArrayList<>();
+	public ArrayList<Piece> pieceList = new ArrayList<>();
 	
 	Piece selectedpiece;
 	
@@ -90,15 +90,16 @@ public class Board extends JPanel{
 	
 	public void move(Move m) {
 		if (p1.turn() == m.piece.iswhite) {
-			
 			if (m.piece.name.equals("King")) {
 				castle(m);
 			}
+			
 			m.piece.col = m.newcol;
 			m.piece.row = m.newrow;
 			m.piece.xpos = m.newcol * tileSize;
 			m.piece.ypos = m.newrow * tileSize;
 			m.piece.hasMoved = true;
+
 			
 			capture(m);
 			
@@ -114,22 +115,21 @@ public class Board extends JPanel{
 	}
 	
 	public void castle(Move m) {
-		if (p1.turn() == m.piece.iswhite) {
-			
-			if ((m.newrow == m.piece.row) && (Math.abs(m.newcol - m.piece.col) == 2)) {
-				Piece rook;
-				if (m.piece.col < m.newcol) {
-					rook = this.get(m.piece.row, 7);
-					rook.col = m.piece.col + 1;
-				}
-				else {
-					rook = this.get(m.piece.row, 0);
-					rook.col = m.piece.col - 1;
-				}
-				rook.xpos = rook.col * tileSize;
-				p1.nextTurn(!p1.turn());
+		System.out.println("hihihehe");
+		
+		if (Math.abs(m.newcol - m.piece.col) == 2) {
+			Piece rook;
+			if (m.piece.col < m.newcol) {
+				rook = this.get(m.piece.row, 7);
+				rook.col = 5;
 			}
-			
+			else {
+				rook = this.get(m.piece.row, 0);
+				rook.col = 3;
+			}
+			rook.xpos = rook.col * tileSize;
+			rook.ypos = rook.row * tileSize;
+			rook.hasMoved = true;
 		}
 		
 	}
@@ -141,14 +141,6 @@ public class Board extends JPanel{
 	public boolean isValidMove(Move move) {
 
 		if (p1.turn() == move.piece.iswhite) {
-			
-			if (move.piece.name.equals("King")) {
-				Piece king;
-				king = move.piece;
-				if (king.canCastle(king.row, king.col - 2) || king.canCastle(king.row, king.col + 2)) {
-					return true;
-				}
-			}
 			
 			if (move.piece.canMove(move.newrow, move.newcol)) {
 				System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
