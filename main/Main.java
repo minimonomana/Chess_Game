@@ -8,7 +8,7 @@ public class Main {
 	
 	public void startGame() {
 		JFrame frame = new JFrame();
-		frame.setSize(754, 678);
+		frame.setSize(954, 778);
 		frame.setBackground(new Color(100, 100, 100));
 		//frame.getContentPane().setBackground(new Color(200, 200, 200));
 		//frame.setLayout(new GridBagLayout());

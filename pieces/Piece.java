@@ -54,5 +54,9 @@ public class Piece {
 	public boolean canCastle(int newrow, int newcol) {
 		return false;
 	}
+	
+	public boolean isAttacked() {
+		return false;
+	}
 
 }

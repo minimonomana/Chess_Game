@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import pieces.Piece;
 
 public class Input extends MouseAdapter{
@@ -37,6 +38,11 @@ public class Input extends MouseAdapter{
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
 		
+		if (col > 7 || row > 7) {
+			board.undo();
+			board.repaint();
+		}
+		
 		if (board.selectedpiece != null) {
 			Move m = new Move(board, board.selectedpiece, row, col);
 			if (board.isValidMove(m)) {
@@ -68,6 +74,8 @@ public class Input extends MouseAdapter{
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
 		
+		
+		
 		System.out.println(i);
 		i = 0;
 		Piece piecexy = board.get(row, col);
@@ -91,6 +99,7 @@ public class Input extends MouseAdapter{
 				Move m = new Move(board, board.selectedpiece, row, col);
 				if (board.isValidMove(m)) {
 					board.move(m);
+					
 				}
 				else {
 					board.selectedpiece.xpos = board.selectedpiece.col * board.tileSize;

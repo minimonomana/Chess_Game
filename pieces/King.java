@@ -60,8 +60,8 @@ public class King extends Piece{
 			Piece rook;
 			if (newcol == 2) {
 				rook = board.get(newrow, 0);
-				if (rook != null && !rook.hasMoved && !hasMoved) {
-					if (board.checkAttacked(newrow, 3, this.iswhite) || board.checkAttacked(newrow, 2, this.iswhite)) {
+				if (rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
+					if (board.checkAttacked(newrow, 4, this.iswhite) || board.checkAttacked(newrow, 3, this.iswhite) || board.checkAttacked(newrow, 2, this.iswhite)) {
 						return false;
 					}
 					else {
@@ -78,8 +78,8 @@ public class King extends Piece{
 			}
 			else if (newcol == 6){
 				rook = board.get(newrow, 7);
-				if (rook != null && !rook.hasMoved && !hasMoved) {
-					if (board.checkAttacked(newrow, 5, this.iswhite) || board.checkAttacked(newrow, 6, this.iswhite)) {
+				if (rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
+					if (board.checkAttacked(newrow, 4, this.iswhite) || board.checkAttacked(newrow, 5, this.iswhite) || board.checkAttacked(newrow, 6, this.iswhite)) {
 						return false;
 					}
 					else {
@@ -102,6 +102,10 @@ public class King extends Piece{
 	
 	public boolean canAttack(int row, int col) {
 		return canMove(row, col);
+	}
+	
+	public boolean isAttacked() {
+		return board.checkAttacked(row, col, iswhite);
 	}
 
 }
