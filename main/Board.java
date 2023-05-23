@@ -39,9 +39,11 @@ public class Board extends JPanel{
 		int mode = input.nextInt();
 		if (mode == 0) {
 			this.resetBoard();
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 		}
 		else if (mode == 1) {
 			this.chess960Board();
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 		}
 //		timer = new ChessTimerGUI();
 //		this.add(timer);
@@ -157,6 +159,13 @@ public class Board extends JPanel{
 	Stack<Move> moveList = new Stack<Move>();
 	
 	public void move(Move m) {
+		if (m.capture != null){
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Capture.wav");
+		}
+		else{
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
+		}
+		
 		if (p1.turn() == true) {
 			if (m.piece.name.equals("King")) {
 				castle(m);
@@ -199,6 +208,7 @@ public class Board extends JPanel{
 	}
 	
 	public void undo() {
+		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
 		Move m = moveList.pop();
 		if (m.piece.name.equals("King")) {
 			if (Math.abs(m.newcol - m.oldcol) > 1) {
