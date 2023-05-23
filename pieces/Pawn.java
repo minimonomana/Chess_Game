@@ -2,6 +2,7 @@ package pieces;
 import java.awt.image.BufferedImage;
 
 import main.Board;
+import main.Move;
 
 public class Pawn extends Piece{
 	boolean enPassantVulnerable = false;
@@ -41,40 +42,35 @@ public class Pawn extends Piece{
 	    
 	    if (this.iswhite) {
 	        if (dx == -1 && Math.abs(dy) == 1 && board.get(x2, y2) != null) {
-	            // Capture a piece diagonally
 	            return true;
 	        } else if (dx == -1 && dy == 0 && board.get(x2, y2) == null) {
-	            // Move one step forward
 	            return true;
 	        } else if (dx == -2 && dy == 0 && x1 == 6 && board.get(x2, y2) == null && board.get(x1 - 1, y1) == null) {
-	            // Move two steps forward in the first move
 	        	enPassantVulnerable = true;
 	            return true;
-	        } else if (dx == -1 && Math.abs(dy) == 1 && board.get(x2 + 1, y2) instanceof Pawn) {
-	            // En passant
-	            Pawn pawn = (Pawn) board.get(x2 + 1, y2);
-	            if (pawn.enPassantVulnerable) {
-	                return true;
-	            }
-	        }
+	        } else if (!board.moveList.isEmpty()) {
+				Move lastMove = board.moveList.peek();
+				Piece lastPiece = board.moveList.peek().piece;
+				if (this.row == 3 && newrow == 2 && lastPiece.name.equals("Pawn") && lastMove.newrow == 3 &&
+						lastMove.oldrow == 1 && newcol == lastMove.newcol && Math.abs(newcol - this.col) == 1) {
+					return true;
+				}
+			}
 	    } else {
 	        if (dx == 1 && Math.abs(dy) == 1 && board.get(x2, y2) != null) {
-	            // Capture a piece diagonally
 	            return true;
 	        } else if (dx == 1 && dy == 0 && board.get(x2, y2) == null) {
-	            // Move one step forward
 	            return true;
 	        } else if (dx == 2 && dy == 0 && x1 == 1 && board.get(x2, y2) == null && board.get(x1 + 1, y1) == null) {
-	            // Move two steps forward in the first move
-	        	enPassantVulnerable = true;
 	            return true;
-	        } else if (dx == 1 && Math.abs(dy) == 1 && board.get(x2 - 1, y2) instanceof Pawn) {
-	            // En passant
-	            Pawn pawn = (Pawn) board.get(x2 - 1, y2);
-	            if (pawn.enPassantVulnerable) {
-	                return true;
-	            }
-	        }
+	        } else if (!board.moveList.isEmpty()) {
+				Move lastMove = board.moveList.peek();
+				Piece lastPiece = board.moveList.peek().piece;
+				if (this.row == 4 && newrow == 5 && lastPiece.name.equals("Pawn") && lastMove.newrow == 4 &&
+						lastMove.oldrow == 6 && newcol == lastMove.newcol && Math.abs(newcol - this.col) == 1) {
+					return true;
+				}
+			}
 	    }
 	    
 	    return false;

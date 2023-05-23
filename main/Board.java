@@ -156,7 +156,7 @@ public class Board extends JPanel{
 		return null;
 	}
 	
-	Stack<Move> moveList = new Stack<Move>();
+	public Stack<Move> moveList = new Stack<Move>();
 	
 	public void move(Move m) {
 		if (m.capture != null){
@@ -166,40 +166,27 @@ public class Board extends JPanel{
 			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
 		}
 		
-		if (p1.turn() == true) {
-			if (m.piece.name.equals("King")) {
-				castle(m);
-			}
-			
-			m.piece.col = m.newcol;
-			m.piece.row = m.newrow;
-			m.piece.xpos = m.newcol * tileSize;
-			m.piece.ypos = m.newrow * tileSize;
-			m.piece.hasMoved = true;
+		if (m.piece.name.equals("King")) {
+			castle(m);
+		}
+		else if (m.piece.name.equals("Pawn") && Math.abs(m.newrow - m.oldrow) == 1 && Math.abs(m.newcol - m.oldcol) == 1) {
+			enPassant(m);
+		}
+		m.piece.col = m.newcol;
+		m.piece.row = m.newrow;
+		m.piece.xpos = m.newcol * tileSize;
+		m.piece.ypos = m.newrow * tileSize;
+		m.piece.hasMoved = true;
 
-			
-			capture(m);
-			
-			moveList.push(m);
+
+		capture(m);
+
+		moveList.push(m);
+		if (p1.turn() == true) {
 			p1.nextTurn(false);
 			p2.nextTurn(true);
-
 		}
 		else if (p2.turn() == true){
-			if (m.piece.name.equals("King")) {
-				castle(m);
-			}
-			
-			m.piece.col = m.newcol;
-			m.piece.row = m.newrow;
-			m.piece.xpos = m.newcol * tileSize;
-			m.piece.ypos = m.newrow * tileSize;
-			m.piece.hasMoved = true;
-
-			
-			capture(m);
-			
-			moveList.push(m);
 			p2.nextTurn(false);
 			p1.nextTurn(true);
 			
@@ -266,6 +253,21 @@ public class Board extends JPanel{
 			rook.hasMoved = true;
 		}
 		
+	}
+	
+	public void enPassant(Move m) {
+		if (!moveList.isEmpty()) {
+			Move lastMove = moveList.peek();
+			Piece lastPiece = moveList.peek().piece;
+			if (p1.turn() && m.oldrow == 3 && m.newrow == 2 && lastPiece.name.equals("Pawn") &&
+					lastMove.newrow == 3 && lastMove.oldrow == 1 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 1) {
+				pieceList.remove(get(3, m.newcol));
+			}
+			else if (p1.turn() && m.oldrow == 4 && m.newrow == 5 && lastPiece.name.equals("Pawn") &&
+					lastMove.newrow == 4 && lastMove.oldrow == 6 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 6) {
+				pieceList.remove(get(4, m.newcol));
+			}
+		}
 	}
 	
 	public boolean isValidMove(Move move) {
