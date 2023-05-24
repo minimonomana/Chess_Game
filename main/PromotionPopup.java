@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import javax.swing.*;
 
 import pieces.*;
 
+
 public class PromotionPopup extends JFrame implements ActionListener {
     int cols = 4;
     int rows = 1;
@@ -25,7 +27,15 @@ public class PromotionPopup extends JFrame implements ActionListener {
     JButton bishop;
     JButton rook;
     JButton queen;
+    Board board;
+    int row;
+    int col;
+    boolean isWhite;
     public PromotionPopup(Board board, boolean isWhite, int row, int col){
+        this.board = board;
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
         knight = new JButton();
         knight.setBounds(0, 0, tileSize, tileSize);
         knight.addActionListener(this);
@@ -54,16 +64,23 @@ public class PromotionPopup extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent choose) {
         if (choose.getSource() == knight) {
-
+            board.pieceList.remove(board.get(row, col));
+            board.pieceList.add(new Knight(board, row, col, isWhite));
             System.out.println("Promoted to a knight!");
         }
         else if (choose.getSource() == bishop) {
+            board.pieceList.remove(board.get(row, col));
+            board.pieceList.add(new Bishop(board, row, col, isWhite));
             System.out.println("Promoted to a bishop!");
         }
         else if (choose.getSource() == rook) {
+            board.pieceList.remove(board.get(row, col));
+            board.pieceList.add(new Rook(board, row, col, isWhite));
             System.out.println("Promoted to a rook!");
         }
         else if (choose.getSource() == queen) {
+            board.pieceList.remove(board.get(row, col));
+            board.pieceList.add(new Queen(board, row, col, isWhite));
             System.out.println("Promoted to a queen!");
         }
         this.setVisible(false);
