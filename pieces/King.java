@@ -13,6 +13,7 @@ public class King extends Piece{
 		this.ypos = row * board.tileSize;
 		
 		this.iswhite = iswhite;
+		this.hasFakeMoved = true;
 		
 		this.name = "King";
 		
@@ -41,9 +42,6 @@ public class King extends Piece{
 				if (!board.checkAttacked(x2, y2, this.iswhite)) {
 					return true;
 				}
-//				else if (canCastle(row, 2) || canCastle(row, 6)) {
-//					return true;
-//				}
 				else {
 					return false;
 				}
@@ -55,12 +53,16 @@ public class King extends Piece{
 	}
 	
 	public boolean canCastle(int newrow, int newcol) {
+
+		if (hasMoved){
+			return false;
+		}
 		
 		if (this.row == newrow) {
 			Piece rook;
 			if (newcol == 2) {
 				rook = board.get(newrow, 0);
-				if (rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
+				if (rook != null && rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
 					if (board.checkAttacked(newrow, 4, this.iswhite) || board.checkAttacked(newrow, 3, this.iswhite) || board.checkAttacked(newrow, 2, this.iswhite)) {
 						return false;
 					}
@@ -78,7 +80,7 @@ public class King extends Piece{
 			}
 			else if (newcol == 6){
 				rook = board.get(newrow, 7);
-				if (rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
+				if (rook != null && rook.name.equals("Rook") && !rook.hasMoved && !hasMoved) {
 					if (board.checkAttacked(newrow, 4, this.iswhite) || board.checkAttacked(newrow, 5, this.iswhite) || board.checkAttacked(newrow, 6, this.iswhite)) {
 						return false;
 					}

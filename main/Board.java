@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Collections;
@@ -28,7 +29,10 @@ public class Board extends JPanel{
 	Players p1;
 	Players p2;
 	ChessTimerGUI timer;
-	
+	int mode;
+
+	int[] fakeBlack;
+	int[] fakeWhite;
 	
 	public Board(){
 		this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
@@ -36,15 +40,20 @@ public class Board extends JPanel{
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
 		Scanner input = new Scanner(System.in);
-		int mode = input.nextInt();
+		mode = input.nextInt();
 		if (mode == 0) {
 			this.resetBoard();
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 		}
 		else if (mode == 1) {
 			this.chess960Board();
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 		}
+		else if (mode == 2){
+			this.fakeChess();
+		}
+		else if (mode == 3){
+			this.semiFakeChess();
+		}
+		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 //		timer = new ChessTimerGUI();
 //		this.add(timer);
 		
@@ -88,7 +97,6 @@ public class Board extends JPanel{
 		pieceList.add(new King(this, 0, 4, false));
 		pieceList.add(new King(this, 7, 4, true));
 
-		
 	}
 	
 	public void chess960Board() {
@@ -138,6 +146,119 @@ public class Board extends JPanel{
 		pieceList.add(new King(this, 0, arr[4], false));
 		pieceList.add(new King(this, 7, arr[4], true));
 
+	}
+
+	public void fakeChess(){
+		fakeBlack = new int[15];
+		fakeWhite = new int[15];
+		List<Integer> list = new LinkedList<Integer>();
+		for (int i = 0; i < 15; i++) {
+			list.add(i);
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < 15; i++){
+			fakeBlack[i] = list.get(i);
+		}
+
+		Collections.shuffle(list);
+		for (int i = 0; i < 15; i++){
+			fakeWhite[i] = list.get(i);
+		}
+
+		// Adding Pawns
+		for(int i=0; i<8; i++) {
+		    pieceList.add(new Pawn(this, 1, i, false));
+		    pieceList.add(new Pawn(this, 6, i, true));
+		}
+
+		// Adding Rooks
+		pieceList.add(new Rook(this, 0, 0, false));
+		pieceList.add(new Rook(this, 0, 7, false));
+		pieceList.add(new Rook(this, 7, 0, true));
+		pieceList.add(new Rook(this, 7, 7, true));
+
+		// Adding Knights
+		pieceList.add(new Knight(this, 0, 1, false));
+		pieceList.add(new Knight(this, 0, 6, false));
+		pieceList.add(new Knight(this, 7, 1, true));
+		pieceList.add(new Knight(this, 7, 6, true));
+
+		// Adding Bishops
+		pieceList.add(new Bishop(this, 0, 2, false));
+		pieceList.add(new Bishop(this, 0, 5, false));
+		pieceList.add(new Bishop(this, 7, 2, true));
+		pieceList.add(new Bishop(this, 7, 5, true));
+
+		// Adding Queens
+		pieceList.add(new Queen(this, 0, 3, false));
+		pieceList.add(new Queen(this, 7, 3, true));
+
+		for (Piece piece: pieceList){
+			piece.sprite = piece.fakesheet.getSubimage(piece.iswhite ? 0: piece.fakesheetscale, 0, piece.fakesheetscale, piece.fakesheetscale).getScaledInstance(tileSize, tileSize, BufferedImage.SCALE_SMOOTH);
+		}
+		// Adding Kings
+		pieceList.add(new King(this, 0, 4, false));
+		pieceList.add(new King(this, 7, 4, true));
+
+	}
+
+	public void semiFakeChess(){
+		fakeBlack = new int[15];
+		fakeWhite = new int[15];
+		List<Integer> list = new LinkedList<Integer>();
+		for (int i = 0; i < 15; i++) {
+			list.add(i);
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < 15; i++){
+			fakeBlack[i] = list.get(i);
+		}
+
+		Collections.shuffle(list);
+		for (int i = 0; i < 15; i++){
+			fakeWhite[i] = list.get(i);
+		}
+
+		// Adding Rooks
+		pieceList.add(new Rook(this, 0, 0, false));
+		pieceList.add(new Rook(this, 0, 7, false));
+		pieceList.add(new Rook(this, 7, 0, true));
+		pieceList.add(new Rook(this, 7, 7, true));
+
+		// Adding Knights
+		pieceList.add(new Knight(this, 0, 1, false));
+		pieceList.add(new Knight(this, 0, 6, false));
+		pieceList.add(new Knight(this, 7, 1, true));
+		pieceList.add(new Knight(this, 7, 6, true));
+
+		// Adding Bishops
+		pieceList.add(new Bishop(this, 0, 2, false));
+		pieceList.add(new Bishop(this, 0, 5, false));
+		pieceList.add(new Bishop(this, 7, 2, true));
+		pieceList.add(new Bishop(this, 7, 5, true));
+
+		// Adding Queens
+		pieceList.add(new Queen(this, 0, 3, false));
+		pieceList.add(new Queen(this, 7, 3, true));
+
+		for (Piece piece: pieceList){
+			piece.sprite = piece.fakesheet.getSubimage(piece.iswhite ? 0: piece.fakesheetscale, 0, piece.fakesheetscale, piece.fakesheetscale).getScaledInstance(tileSize, tileSize, BufferedImage.SCALE_SMOOTH);
+		}
+
+		// Adding Pawns
+		for(int i=0; i<8; i++) {
+		    pieceList.add(new Pawn(this, 1, i, false));
+		    pieceList.add(new Pawn(this, 6, i, true));
+		}
+		for (Piece piece: pieceList){
+			if (piece.name.equals("Pawn")){
+				piece.hasFakeMoved = true;
+			}
+		}
+
+		// Adding Kings
+		pieceList.add(new King(this, 0, 4, false));
+		pieceList.add(new King(this, 7, 4, true));
 
 	}
 	
@@ -172,12 +293,12 @@ public class Board extends JPanel{
 		else if (m.piece.name.equals("Pawn") && Math.abs(m.newrow - m.oldrow) == 1 && Math.abs(m.newcol - m.oldcol) == 1) {
 			enPassant(m);
 		}
+
 		m.piece.col = m.newcol;
 		m.piece.row = m.newrow;
 		m.piece.xpos = m.newcol * tileSize;
 		m.piece.ypos = m.newrow * tileSize;
 		m.piece.hasMoved = true;
-
 
 		capture(m);
 
@@ -189,7 +310,53 @@ public class Board extends JPanel{
 		else if (p2.turn() == true){
 			p2.nextTurn(false);
 			p1.nextTurn(true);
-			
+		}
+
+		if ((mode == 2 || mode == 3) && !m.piece.hasFakeMoved){
+			pieceList.remove(m.piece);
+			Piece fakePiece = null;
+			if (m.piece.iswhite){
+				int newPiece = fakeWhite[8 * (m.oldrow - 6) + m.oldcol];
+				if (newPiece < 8){
+					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
+				}
+				else{
+					if (newPiece == 8 || newPiece == 14){
+						fakePiece = new Rook(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if(newPiece == 9 || newPiece == 13){
+						fakePiece = new Knight(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if (newPiece == 10 || newPiece == 12){
+						fakePiece = new Bishop(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if (newPiece == 11){
+						fakePiece = new Queen(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+				}
+			}
+			else{
+				int newPiece = fakeBlack[8 * m.oldrow + m.oldcol];
+				if (newPiece < 8){
+					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
+				}
+				else{
+					if (newPiece == 8 || newPiece == 14){
+						fakePiece = new Rook(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if(newPiece == 9 || newPiece == 13){
+						fakePiece = new Knight(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if (newPiece == 10 || newPiece == 12){
+						fakePiece = new Bishop(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+					else if (newPiece == 11){
+						fakePiece = new Queen(this, m.newrow, m.newcol, m.piece.iswhite);
+					}
+				}
+			}
+			pieceList.add(fakePiece);
+			fakePiece.hasFakeMoved = true;
 		}
 		
 	}
@@ -226,6 +393,7 @@ public class Board extends JPanel{
 			m.capture.xpos = m.newcol * tileSize;
 			m.capture.ypos = m.newrow * tileSize;
 		}
+		m.piece.hasMoved = false;
 		p1.nextTurn(!p1.turn());
 		p2.nextTurn(!p2.turn());
 		
@@ -251,6 +419,51 @@ public class Board extends JPanel{
 			rook.xpos = rook.col * tileSize;
 			rook.ypos = rook.row * tileSize;
 			rook.hasMoved = true;
+
+			pieceList.remove(rook);
+			Piece fakePiece = null;
+			if (m.piece.iswhite){
+				int newPiece = fakeWhite[m.piece.col < m.newcol ? 8: 14];
+				if (newPiece < 8){
+					fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
+				}
+				else{
+					if (newPiece == 8 || newPiece == 14){
+						fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if(newPiece == 9 || newPiece == 13){
+						fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if (newPiece == 10 || newPiece == 12){
+						fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if (newPiece == 11){
+						fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
+					}
+				}
+			}
+			else{
+				int newPiece = fakeBlack[m.piece.col < m.newcol ? 8: 14];
+				if (newPiece < 8){
+					fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
+				}
+				else{
+					if (newPiece == 8 || newPiece == 14){
+						fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if(newPiece == 9 || newPiece == 13){
+						fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if (newPiece == 10 || newPiece == 12){
+						fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else if (newPiece == 11){
+						fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
+					}
+				}
+			}
+			pieceList.add(fakePiece);
+			fakePiece.hasFakeMoved = true;
 		}
 		
 	}
@@ -275,7 +488,7 @@ public class Board extends JPanel{
 		if (p1.turn() == move.piece.iswhite) {
 			
 			if (move.piece.canMove(move.newrow, move.newcol)) {
-				System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
+				// System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
 				return true;
 			}
 			
@@ -288,7 +501,7 @@ public class Board extends JPanel{
 	public boolean checkAttacked(int row, int col, boolean white) {
 		
 		for (Piece piece: pieceList) {
-			System.out.println(piece.name);
+			// System.out.println(piece.name);
 			if (piece.iswhite != white) {
 				if (piece.canAttack(row, col)) {
 					System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
@@ -327,7 +540,7 @@ public class Board extends JPanel{
 					}
 				}
 			}
-			System.out.println();
+			// System.out.println();
 		}
 		
 		for (Piece piece: pieceList) {

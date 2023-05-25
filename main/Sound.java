@@ -4,7 +4,6 @@ import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
-import java.util.Scanner;
 
 public class Sound {
     // enter the game, each move, check, checkmate, stalemate
@@ -36,10 +35,4 @@ public class Sound {
         }
     }
 
-    // public static void main(String[] args) {
-    //     // fileName must be .wav
-    //     String fileName = "Checkmate";
-
-    //     playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
-    // }
 }

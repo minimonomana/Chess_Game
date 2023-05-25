@@ -16,21 +16,25 @@ public class Piece {
 	
 	public boolean iswhite;
 	public boolean hasMoved = false;
+	public boolean hasFakeMoved = false;
 	public String name;
 	
 	BufferedImage sheet;
+	public BufferedImage fakesheet;
 	{
 		try {
 			sheet = ImageIO.read(new File("C:\\Users\\nguye\\java_eclipse_workspace\\ChessFromYoutube\\src\\res\\piece.png"));
+			fakesheet = ImageIO.read(new File("C:\\Users\\nguye\\Downloads\\271268854_676252396701624_8691544580892285613_n.png"));
 		}
 		catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 	
-	Image sprite;
+	public Image sprite;
 	
 	public int sheetscale = sheet.getWidth() / 6;
+	public int fakesheetscale = fakesheet.getHeight();
 	
 	Board board;
 	
