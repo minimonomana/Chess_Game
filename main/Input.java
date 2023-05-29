@@ -81,6 +81,7 @@ public class Input extends MouseAdapter{
 		if (board.selectedpiece != null) {
 			Move m = new Move(board, board.selectedpiece, row, col);
 			if (board.isValidMove(m)) {
+				// where some code must be added
 				board.move(m);
 				if (m.piece.name.equals("Pawn") && ((m.piece.row == 0 && m.piece.iswhite) || (m.piece.row == 7 && !m.piece.iswhite))){
 					new PromotionPopup(board, m.piece.iswhite, m.piece.row, m.piece.col);
