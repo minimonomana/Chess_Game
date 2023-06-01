@@ -21,10 +21,16 @@ public class Piece {
 	
 	BufferedImage sheet;
 	public BufferedImage fakesheet;
+	public static BufferedImage undoImage;
+	public static BufferedImage resignImage;
+	public static BufferedImage drawImage;
 	{
 		try {
 			sheet = ImageIO.read(new File("C:\\Users\\nguye\\java_eclipse_workspace\\ChessFromYoutube\\src\\res\\piece.png"));
 			fakesheet = ImageIO.read(new File("C:\\Users\\nguye\\Downloads\\271268854_676252396701624_8691544580892285613_n.png"));
+			undoImage = ImageIO.read(new File("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\undo.png"));
+			resignImage = ImageIO.read(new File("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\resign.png"));
+			drawImage = ImageIO.read(new File("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\draw.png"));
 		}
 		catch(IOException e){
 			e.printStackTrace();
