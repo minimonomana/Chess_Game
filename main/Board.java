@@ -314,6 +314,9 @@ public class Board extends JPanel{
 		if (isCheckMated(p1.turn())) {
 			System.out.println("CHECKMATE!!!");
 		}
+		if (isStaleMated(p1.turn())) {
+			System.out.println("Stalemate.");
+		}
 		
 	}
 	
@@ -360,7 +363,6 @@ public class Board extends JPanel{
 	}
 	
 	public void castle(Move m) {
-		System.out.println("hihihehe");
 		
 		if (Math.abs(m.newcol - m.piece.col) == 2) {
 			Piece rook;
@@ -428,7 +430,6 @@ public class Board extends JPanel{
 		if (!moveList.isEmpty()) {
 			Move lastMove = moveList.peek();
 			Piece lastPiece = moveList.peek().piece;
-			System.out.println(p1.turn());
 			if (p1.turn() && m.oldrow == 3 && m.newrow == 2 && lastPiece.name.equals("Pawn") &&
 					lastMove.newrow == 3 && lastMove.oldrow == 1 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 1) {
 				pieceList.remove(get(3, m.newcol));
@@ -572,18 +573,17 @@ public class Board extends JPanel{
 	}
 	
 	public boolean checkAttacked(int row, int col, boolean white) {
-		
+
 		for (Piece piece: pieceList) {
 			// System.out.println(piece.name);
 			if (piece.iswhite != white) {
 				if (piece.canAttack(row, col)) {
-					System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
 					return true;
 				}
 			}
-			
+
 		}
-		
+
 		return false;
 	}
 
@@ -592,6 +592,25 @@ public class Board extends JPanel{
 			if (piece.iswhite == isWhite) {
 				if (piece.name.equals("King")) {
 					if (!checkAttacked(piece.row, piece.col, isWhite)) {
+						return false;
+					}
+				}
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						if (isValidMove(new Move(this, piece, i, j))) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	public boolean isStaleMated(boolean isWhite) {
+		for (Piece piece : pieceList) {
+			if (piece.iswhite == isWhite) {
+				if (piece.name.equals("King")) {
+					if (checkAttacked(piece.row, piece.col, isWhite)) {
 						return false;
 					}
 				}
