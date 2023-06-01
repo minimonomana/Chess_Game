@@ -30,6 +30,7 @@ public class Board extends JPanel{
 	Players p2;
 	ChessTimerGUI timer;
 	int mode;
+	GameStatus status;
 
 	int[] fakeBlack;
 	int[] fakeWhite;
@@ -53,6 +54,7 @@ public class Board extends JPanel{
 		else if (mode == 3){
 			this.semiFakeChess();
 		}
+		this.status = GameStatus.ACTIVE;
 		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 //		timer = new ChessTimerGUI();
 //		this.add(timer);
@@ -316,7 +318,7 @@ public class Board extends JPanel{
 			pieceList.remove(m.piece);
 			Piece fakePiece = null;
 			if (m.piece.iswhite){
-				int newPiece = fakeWhite[8 * (m.oldrow - 6) + m.oldcol];
+				int newPiece = fakeWhite[8 * (m.oldrow - 6) + m.oldcol == 15 ? 12 : 8 * (m.oldrow - 6) + m.oldcol];
 				if (newPiece < 8){
 					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
 				}
@@ -336,7 +338,7 @@ public class Board extends JPanel{
 				}
 			}
 			else{
-				int newPiece = fakeBlack[8 * m.oldrow + m.oldcol];
+				int newPiece = fakeBlack[8 * (m.oldrow) + m.oldcol == 15 ? 12 : 8 * (m.oldrow) + m.oldcol];
 				if (newPiece < 8){
 					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
 				}
@@ -358,6 +360,7 @@ public class Board extends JPanel{
 			pieceList.add(fakePiece);
 			fakePiece.hasFakeMoved = true;
 		}
+		win(p1);
 		
 	}
 	
@@ -420,50 +423,53 @@ public class Board extends JPanel{
 			rook.ypos = rook.row * tileSize;
 			rook.hasMoved = true;
 
-			pieceList.remove(rook);
-			Piece fakePiece = null;
-			if (m.piece.iswhite){
-				int newPiece = fakeWhite[m.piece.col < m.newcol ? 8: 14];
-				if (newPiece < 8){
-					fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
+			if (mode == 2 || mode == 3){
+				pieceList.remove(rook);
+				Piece fakePiece = null;
+				if (m.piece.iswhite){
+					int newPiece = fakeWhite[m.piece.col < m.newcol ? 8: 14];
+					if (newPiece < 8){
+						fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
+					}
+					else{
+						if (newPiece == 8 || newPiece == 14){
+							fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if(newPiece == 9 || newPiece == 13){
+							fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if (newPiece == 10 || newPiece == 12){
+							fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if (newPiece == 11){
+							fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
+						}
+					}
 				}
 				else{
-					if (newPiece == 8 || newPiece == 14){
-						fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
+					int newPiece = fakeBlack[m.piece.col < m.newcol ? 8: 14];
+					if (newPiece < 8){
+						fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
 					}
-					else if(newPiece == 9 || newPiece == 13){
-						fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
-					}
-					else if (newPiece == 10 || newPiece == 12){
-						fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
-					}
-					else if (newPiece == 11){
-						fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
+					else{
+						if (newPiece == 8 || newPiece == 14){
+							fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if(newPiece == 9 || newPiece == 13){
+							fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if (newPiece == 10 || newPiece == 12){
+							fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
+						}
+						else if (newPiece == 11){
+							fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
+						}
 					}
 				}
+				pieceList.add(fakePiece);
+				fakePiece.hasFakeMoved = true;
 			}
-			else{
-				int newPiece = fakeBlack[m.piece.col < m.newcol ? 8: 14];
-				if (newPiece < 8){
-					fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
-				}
-				else{
-					if (newPiece == 8 || newPiece == 14){
-						fakePiece = new Rook(this, rook.row, rook.col, m.piece.iswhite);
-					}
-					else if(newPiece == 9 || newPiece == 13){
-						fakePiece = new Knight(this, rook.row, rook.col, m.piece.iswhite);
-					}
-					else if (newPiece == 10 || newPiece == 12){
-						fakePiece = new Bishop(this, rook.row, rook.col, m.piece.iswhite);
-					}
-					else if (newPiece == 11){
-						fakePiece = new Queen(this, rook.row, rook.col, m.piece.iswhite);
-					}
-				}
-			}
-			pieceList.add(fakePiece);
-			fakePiece.hasFakeMoved = true;
+			
 		}
 		
 	}
@@ -491,10 +497,8 @@ public class Board extends JPanel{
 				// System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
 				return true;
 			}
-			
 
 		}
-		
 		return false;
 	}
 	
@@ -504,7 +508,7 @@ public class Board extends JPanel{
 			// System.out.println(piece.name);
 			if (piece.iswhite != white) {
 				if (piece.canAttack(row, col)) {
-					System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
+					//System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
 					return true;
 				}
 			}
@@ -513,7 +517,61 @@ public class Board extends JPanel{
 		
 		return false;
 		
+	}
+
+	public void status(Players p) {
+		if (this.status == GameStatus.RESIGNATION){
+			System.out.println(0);
+			this.status = p.turn() ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
+		}
+		if (this.status == GameStatus.OFFER_A_DRAW){
+			System.out.println(1);
+			this.status = GameStatus.DRAW;
+		}
+
+		Piece king = null;
+		for (Piece piece: pieceList) {
+			if (piece.name.equals("King") && piece.iswhite == p.turn()) {
+				king = piece;
+			}
+			for (int r = 0; r < 8; r++) {
+				for (int c = 0; c < 8; c++){
+					if (isValidMove(new Move(this, piece, r, c))) {
+						this.status = GameStatus.ACTIVE;
+						return;
+					}
+				}
+			}
+		}
 		
+		if (!king.isAttacked()) {
+			status = GameStatus.STALEMATE;
+			System.out.println(2);
+		}
+		else if(king.isAttacked() && king.iswhite) {
+			status = GameStatus.BLACK_WIN;
+			System.out.println(3);
+		}
+		else if(king.isAttacked() && !king.iswhite) {
+			status = GameStatus.WHITE_WIN;
+			System.out.println(4);
+		}
+		
+	}
+	
+	public void win(Players p) {
+		switch (this.status) {
+			// case ACTIVE:
+			// 	System.out.println("Continue!");
+			case WHITE_WIN:
+				System.out.println("White win!");
+			case BLACK_WIN:
+				System.out.println("Black win!");
+			case DRAW:
+				System.out.println("Draw!");
+			default:
+				System.out.println("Continue!");
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -527,6 +585,13 @@ public class Board extends JPanel{
 				
 			}
 		}
+		//g2d.setColor(Color.BLACK);
+		g2d.fillRect(9 * tileSize + 40, 4 * tileSize, tileSize - 40, tileSize - 40);
+		//g2d.setColor(Color.GREEN);
+		g2d.fillRect(9 * tileSize + 80, 4 * tileSize, tileSize - 40, tileSize - 40);
+		g2d.drawImage(Piece.undoImage, 9 * tileSize, 4 * tileSize, tileSize - 40, tileSize - 40, null);
+		g2d.drawImage(Piece.resignImage, 9 * tileSize + 40, 4 * tileSize, tileSize - 40, tileSize - 40, null);
+		g2d.drawImage(Piece.drawImage, 9 * tileSize + 80, 4 * tileSize, tileSize - 40, tileSize - 40, null);
 		
 		if (selectedpiece != null) {
 			
