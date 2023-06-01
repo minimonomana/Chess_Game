@@ -1,12 +1,10 @@
 package main;
+
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Scanner;
 
-class MouseHandling extends MouseAdapter {
-
-}
 public class ChessTimerGUI extends JPanel {
     static int timer1; // time for each player's timer
     static int timer2;
@@ -44,7 +42,7 @@ public class ChessTimerGUI extends JPanel {
 //                timer1 = timer2 = 60;
 //                break;
 //            case "Blitz":
-//                timer1 = timer2 = 300;
+//                timer1 = timer2 = 300; +-5
 //                break;
 //            case "Rapid":
 //                timer1 = timer2 = 900;
@@ -56,71 +54,47 @@ public class ChessTimerGUI extends JPanel {
 //                timer1 = scanner.nextInt();
 //                timer2 = scanner.nextInt();
 //                break;
-//
 //        }
 
-        timer1 = 300;
-        timer2 = 300;
+        timer1 = 20;
+        timer2 = 20;
 
         isTimerRunning = false;
-        isTimer1Active = true;
-        isTimer2Active = false;
+        isTimer1Active = false;
+        isTimer2Active = true;
 
         // Create labels for timer display
-        labelTimer1 = new JLabel("Player 1: " + formatTime(timer1));
-        labelTimer2 = new JLabel("Player 2: " + formatTime(timer2));
+        labelTimer1 = new JLabel(formatTime(timer1));
+        labelTimer1.setFont(new Font("Arial", Font.PLAIN, 20));
+        labelTimer1.setOpaque(true);
+        labelTimer1.setBackground(Color.black);
+        labelTimer1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-        // Add components to the panel
-        JPanel panel = new JPanel(new GridLayout(3, 0));
-        panel.add(labelTimer1);
-        panel.add(labelTimer2);
+        labelTimer2 = new JLabel(formatTime(timer2));
+        labelTimer2.setFont(new Font("Arial", Font.PLAIN, 20));
+        labelTimer2.setOpaque(true);
+        labelTimer2.setBackground(Color.white);
+        labelTimer2.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        labelTimer2.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+        // Set layout and Add components to the panel
+        setLayout(new GridLayout(2, 1));
+        add(labelTimer1);
+        add(labelTimer2);
 
         // Set panel properties
         // setPreferredSize() thay vi setSize() de size linh hoat hon
-        panel.setPreferredSize(new Dimension(150, 300));
-        panel.setVisible(true);
-
-        // Start Timer 2 at the start of the game
-        isTimerRunning = true;
-        timer2Active();
-
-        addMouseListener(new MouseAdapter() {
-            // Handles the action performed when the mouse is released.
-            // Starts or stops the timers based on the current player's turn.
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                System.out.println("mouse released!");
-                // Start or stop timer for current player
-                if (isTimerRunning) {
-                    if (isTimer1Active) {
-                        endTime1 = (int) System.currentTimeMillis() / 1000;
-                        timer1Obj.stop();
-                        timer1 = timer1 - (endTime1 - startTime1);
-                        System.out.println("Player 1 delay time: " + timer1Obj.getDelay());
-                        System.out.println("Player 1 time remaining: " + timer1);
-                        isTimer1Active = false;
-                        isTimer2Active = true;
-                    } else {
-                        endTime2 = (int) System.currentTimeMillis() / 1000;
-                        timer2Obj.stop();
-                        timer2 = timer2 - (endTime2 - startTime2);
-                        System.out.println("Player 2 time remaining: " + timer2);
-                        isTimer2Active = false;
-                        isTimer1Active = true;
-                    }
-                    isTimerRunning = false;
-                }
-            }
-        });
+        setPreferredSize(new Dimension(150, 300));
+        setVisible(true);
     }
 
-    public void timer2Active() {
-        isTimer2Active = true;
+    // Automatically start Timer2 at the start of the game
+    public void startGame() {
+        isTimerRunning = true;
         timer2Obj = new Timer(1000, new TimerAction(timer2, labelTimer2));
         startTime2 = (int) System.currentTimeMillis() / 1000;
         timer2Obj.start();
     }
-
 
     // Formats the given time in minutes and seconds
     private String formatTime(int time) {
@@ -129,9 +103,46 @@ public class ChessTimerGUI extends JPanel {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    // Handles the action performed when a move is made.
+    // Starts or stops the timers based on the current player's turn.
+    public void changeTimer(boolean changed) {
+        // Start or stop timer for current player
+        // if (isTimerRunning)
+        if (changed) {
+            if (isTimer1Active) {
+                endTime1 = (int) System.currentTimeMillis() / 1000;
+                timer1Obj.stop();
+                timer1 = timer1 - (endTime1 - startTime1);
+                System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
+                isTimer1Active = false;
+                isTimer2Active = true;
+            } else {
+                endTime2 = (int) System.currentTimeMillis() / 1000;
+                timer2Obj.stop();
+                timer2 = timer2 - (endTime2 - startTime2);
+                System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
+                isTimer2Active = false;
+                isTimer1Active = true;
+            }
+            isTimerRunning = false;
+        }
+
+        if (isTimer1Active) {
+            timer1Obj = new Timer(1000, new TimerAction(timer1, labelTimer1));
+            startTime1 = (int) System.currentTimeMillis() / 1000;
+            timer1Obj.start();
+        } else {
+            timer2Obj = new Timer(1000, new TimerAction(timer2, labelTimer2));
+            startTime2 = (int) System.currentTimeMillis() / 1000;
+            timer2Obj.start();
+        }
+
+        isTimerRunning = true;
+    }
+
     // Inner class implementing ActionListener interface
     // Update the timer label and check if player's time has run out
-    private class TimerAction implements MouseListener, ActionListener {
+    private class TimerAction implements ActionListener {
         private int time;
         private JLabel label;
 
@@ -141,39 +152,13 @@ public class ChessTimerGUI extends JPanel {
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {}
-
-        @Override
-        public void mousePressed(MouseEvent e) {}
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            time--;
-            label.setText(isTimer1Active ? "Player 1: " + formatTime(time) : "Player 2: " + formatTime(time));
-            if (time == 0) {
-                // Player's time has run out
-                if (isTimer1Active) {
-                    timer1Obj.stop();
-                } else {
-                    timer2Obj.stop();
-                }
-                isTimerRunning = false;
-                // Display a message dialog when a player's time runs out, indicating the winner of the game.
-                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), isTimer1Active ? "Player 2 wins!" : "Player 1 wins!");
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {}
-
-        @Override
-        public void mouseExited(MouseEvent e) { }
-
-        @Override
         public void actionPerformed(ActionEvent e) {
             time--;
-            label.setText(isTimer1Active ? "Player 1: " + formatTime(time) : "Player 2: " + formatTime(time));
-            if (time == 0) {
+//            label.setText(isTimer1Active ? "Player 1: " + formatTime(time) : "Player 2: " + formatTime(time));
+            label.setText(formatTime(time));
+            System.out.println("Time in actionPerformed(): " + time);
+            System.out.println("isTimer1Active-isTimer2Active: " + isTimer1Active + "-" + isTimer2Active);
+            if (time <= 0) {
                 // Player's time has run out
                 if (isTimer1Active) {
                     timer1Obj.stop();
@@ -187,9 +172,9 @@ public class ChessTimerGUI extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
-        new ChessTimerGUI();
-    }
+//    public static void main(String[] args) {
+//        new ChessTimerGUI();
+//    }
 
     // setLookAndFeel()
 }
