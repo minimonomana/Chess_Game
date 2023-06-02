@@ -1,4 +1,4 @@
-package Menu;
+package main;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -86,12 +86,13 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         // Add the background image to the layered pane
         ImageIcon backgroundImage = null;
-        backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
+        
+        backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
         if(name.equals("menuPanel")) {
-        	backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
+        	backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
         }
         else if(name.equals("gamePanel")||name.equals("game2Panel")||name.equals("game3Panel")||name.equals("game4Panel")) {
-             backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+             backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
              // Create text fields
              textField1 = new JTextField(80);
              textField2 = new JTextField(80);
@@ -127,14 +128,14 @@ public class ChessMenu extends JFrame implements ActionListener {
         JButton[] menuButtons = new JButton[buttons.length];
         int buttonY = 28;
         String[] pathToButtonTexture = {
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\newgamebutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\modesbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\recordsbuttom.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\settingsbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\backbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\bullet.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\blizt.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\rapid.png"
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\newgamebutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\modesbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\recordsbuttom.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\settingsbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\backbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\bullet.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\blizt.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\rapid.png"
         };
 
         if(name.equals("menuPanel")) {

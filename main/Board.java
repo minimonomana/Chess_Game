@@ -208,17 +208,17 @@ public class Board extends JPanel{
 		fakeBlack = new int[15];
 		fakeWhite = new int[15];
 		List<Integer> list = new LinkedList<Integer>();
-		for (int i = 0; i < 15; i++) {
+		for (int i = 8; i < 15; i++) {
 			list.add(i);
 		}
 		Collections.shuffle(list);
-		for (int i = 0; i < 15; i++){
-			fakeBlack[i] = list.get(i);
+		for (int i = 8; i < 15; i++){
+			fakeBlack[i] = list.get(i - 8);
 		}
 
 		Collections.shuffle(list);
-		for (int i = 0; i < 15; i++){
-			fakeWhite[i] = list.get(i);
+		for (int i = 8; i < 15; i++){
+			fakeWhite[i] = list.get(i - 8);
 		}
 
 		// Adding Rooks
@@ -319,6 +319,7 @@ public class Board extends JPanel{
 			Piece fakePiece = null;
 			if (m.piece.iswhite){
 				int newPiece = fakeWhite[8 * (m.oldrow - 6) + m.oldcol == 15 ? 12 : 8 * (m.oldrow - 6) + m.oldcol];
+				System.out.println(newPiece + 1000);
 				if (newPiece < 8){
 					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
 				}
@@ -338,7 +339,8 @@ public class Board extends JPanel{
 				}
 			}
 			else{
-				int newPiece = fakeBlack[8 * (m.oldrow) + m.oldcol == 15 ? 12 : 8 * (m.oldrow) + m.oldcol];
+				int newPiece = fakeBlack[8 * (1 - m.oldrow) + m.oldcol == 15 ? 12 : 8 * (1 - m.oldrow) + m.oldcol];
+				System.out.println(newPiece + 2000);
 				if (newPiece < 8){
 					fakePiece = new Pawn(this, m.newrow, m.newcol, m.piece.iswhite);
 				}
@@ -427,7 +429,7 @@ public class Board extends JPanel{
 				pieceList.remove(rook);
 				Piece fakePiece = null;
 				if (m.piece.iswhite){
-					int newPiece = fakeWhite[m.piece.col < m.newcol ? 8: 14];
+					int newPiece = fakeWhite[m.piece.col > m.newcol ? 8 : 12];
 					if (newPiece < 8){
 						fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
 					}
@@ -447,7 +449,7 @@ public class Board extends JPanel{
 					}
 				}
 				else{
-					int newPiece = fakeBlack[m.piece.col < m.newcol ? 8: 14];
+					int newPiece = fakeBlack[m.piece.col > m.newcol ? 8: 12];
 					if (newPiece < 8){
 						fakePiece = new Pawn(this, rook.row, rook.col, m.piece.iswhite);
 					}
