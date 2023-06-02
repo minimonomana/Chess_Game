@@ -30,6 +30,7 @@ public class Board extends JPanel{
 	Players p2;
 	ChessTimerGUI timer;
 	int mode;
+
 	GameStatus status;
 
 	int[] fakeBlack;
@@ -54,6 +55,7 @@ public class Board extends JPanel{
 		else if (mode == 3){
 			this.semiFakeChess();
 		}
+
 		this.status = GameStatus.ACTIVE;
 		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
 //		timer = new ChessTimerGUI();
@@ -208,6 +210,7 @@ public class Board extends JPanel{
 		fakeBlack = new int[15];
 		fakeWhite = new int[15];
 		List<Integer> list = new LinkedList<Integer>();
+
 		for (int i = 8; i < 15; i++) {
 			list.add(i);
 		}
@@ -312,6 +315,14 @@ public class Board extends JPanel{
 		else if (p2.turn() == true){
 			p2.nextTurn(false);
 			p1.nextTurn(true);
+
+		}
+		if (isCheckMated(p1.turn())) {
+			System.out.println("CHECKMATE!!!");
+		}
+		if (isStaleMated(p1.turn())) {
+			System.out.println("Stalemate.");
+
 		}
 
 		if ((mode == 2 || mode == 3) && !m.piece.hasFakeMoved){
@@ -409,7 +420,6 @@ public class Board extends JPanel{
 	}
 	
 	public void castle(Move m) {
-		System.out.println("hihihehe");
 		
 		if (Math.abs(m.newcol - m.piece.col) == 2) {
 			Piece rook;
@@ -424,6 +434,7 @@ public class Board extends JPanel{
 			rook.xpos = rook.col * tileSize;
 			rook.ypos = rook.row * tileSize;
 			rook.hasMoved = true;
+
 
 			if (mode == 2 || mode == 3){
 				pieceList.remove(rook);
@@ -484,8 +495,8 @@ public class Board extends JPanel{
 					lastMove.newrow == 3 && lastMove.oldrow == 1 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 1) {
 				pieceList.remove(get(3, m.newcol));
 			}
-			else if (p1.turn() && m.oldrow == 4 && m.newrow == 5 && lastPiece.name.equals("Pawn") &&
-					lastMove.newrow == 4 && lastMove.oldrow == 6 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 6) {
+			else if (p2.turn() && m.oldrow == 4 && m.newrow == 5 && lastPiece.name.equals("Pawn") &&
+					lastMove.newrow == 4 && lastMove.oldrow == 6 && m.newcol == lastMove.newcol && Math.abs(m.newcol - m.oldcol) == 1) {
 				pieceList.remove(get(4, m.newcol));
 			}
 		}
@@ -493,32 +504,190 @@ public class Board extends JPanel{
 	
 	public boolean isValidMove(Move move) {
 
-		if (p1.turn() == move.piece.iswhite) {
-			
-			if (move.piece.canMove(move.newrow, move.newcol)) {
-				// System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
+		int rowKing = 0;
+		int colKing = 0;
+		boolean isWhiteKing = move.piece.iswhite;
+		for (Piece piece : pieceList) {
+			if (piece.iswhite == move.piece.iswhite && piece.name.equals("King")) {
+				rowKing = piece.row;
+				colKing = piece.col;
+				break;
+			}
+		}
+		if (p1.turn() == move.piece.iswhite && move.piece.canMove(move.newrow, move.newcol)) {
+			if (move.piece.name.equals("King")) {
+				if (checkAttacked(move.newrow, move.newcol, isWhiteKing)) {
+					return false;
+				}
 				return true;
 			}
+			boolean isPinned = false;
+			int rowIncrement = 0;
+			int colIncrement = 0;
+			if (move.piece.row > rowKing) {
+				rowIncrement = 1;
+			}
+			else if (move.piece.row < rowKing) {
+				rowIncrement = -1;
+			}
+			if (move.piece.col > colKing) {
+				colIncrement = 1;
+			}
+			else if (move.piece.col < colKing) {
+				colIncrement = -1;
+			}
+			int curRow = rowKing;
+			int curCol = colKing;
+			boolean wasPiece = false;
+			boolean isMoveInPinLine = false;
+			while (curRow > -1 && curRow < 8 && curCol > -1 && curCol < 8) {
+				curRow += rowIncrement;
+				curCol += colIncrement;
+				if (move.newrow == curRow && move.newcol == curCol) {
+					isMoveInPinLine = true;
+				}
+				if (wasPiece && get(curRow, curCol) != null) {
+					Piece pinner = get(curRow, curCol);
+					if (pinner.iswhite == p1.turn()) {
+						break;
+					}
+					if ((pinner.name.equals("Bishop") || pinner.name.equals("Queen")) && Math.abs(rowIncrement) + Math.abs(colIncrement) == 2) {
+						isPinned = true;
+						break;
+					}
+					else if ((pinner.name.equals("Rook") || pinner.name.equals("Queen")) && Math.abs(rowIncrement) + Math.abs(colIncrement) == 1) {
+						isPinned = true;
+						break;
+					}
+				}
+				else if (!wasPiece && get(curRow, curCol) != null) {
+					if (get(curRow, curCol) == move.piece) {
+						wasPiece = true;
+					}
+					else {
+						break;
+					}
+				}
+			}
 
+			if (!checkAttacked(rowKing, colKing, isWhiteKing)) {
+				if (isPinned) {
+					if (isMoveInPinLine) {
+						return true;
+					}
+					return false;
+				}
+				return true;
+			}
+			int numOfChecks = 0;
+			Piece curAttacker = move.piece;
+			for (Piece attacker : pieceList) {
+				if (attacker.canAttack(rowKing, colKing) && attacker.iswhite != isWhiteKing) {
+					numOfChecks += 1;
+					curAttacker = attacker;
+				}
+			}
+			if (numOfChecks > 1) {
+				return false;
+			}
+			if (move.newrow == curAttacker.row && move.newcol == curAttacker.col && !move.piece.name.equals("King")) {
+				return true;
+			}
+			if (curAttacker.name.equals("Bishop") || curAttacker.name.equals("Rook") || curAttacker.name.equals("Queen")) {
+				boolean canBlock = false;
+				if (move.newrow <= Math.max(curAttacker.row, rowKing) && move.newrow >= Math.min(curAttacker.row, rowKing)
+						&& move.newcol <= Math.max(curAttacker.col, colKing) && move.newcol >= Math.min(curAttacker.col, rowKing)) {
+					rowIncrement = 0;
+					colIncrement = 0;
+					if (curAttacker.row > rowKing) {
+						rowIncrement = 1;
+					} else if (curAttacker.row < rowKing) {
+						rowIncrement = -1;
+					}
+					if (curAttacker.col > colKing) {
+						colIncrement = 1;
+					} else if (curAttacker.col < colKing) {
+						colIncrement = -1;
+					}
+					curRow = rowKing;
+					curCol = colKing;
+					while (curRow != curAttacker.row && curCol != curAttacker.col) {
+						curRow += rowIncrement;
+						curCol += colIncrement;
+						if (move.newrow == curRow && move.newcol == curCol) {
+							canBlock = true;
+							break;
+						}
+					}
+				}
+				if (canBlock) {
+					if (isPinned && !isMoveInPinLine) {
+						return false;
+					}
+					return true;
+				}
+				return false;
+			}
+			return true;
+			// System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
 		}
 		return false;
 	}
 	
 	public boolean checkAttacked(int row, int col, boolean white) {
-		
+
 		for (Piece piece: pieceList) {
 			// System.out.println(piece.name);
 			if (piece.iswhite != white) {
 				if (piece.canAttack(row, col)) {
-					//System.out.printf("%d %d attacks %d %d\n", piece.row, piece.col, row, col);
 					return true;
 				}
 			}
-			
+
 		}
-		
+
 		return false;
-		
+	}
+
+	public boolean isCheckMated(boolean isWhite) {
+		for (Piece piece : pieceList) {
+			if (piece.iswhite == isWhite) {
+				if (piece.name.equals("King")) {
+					if (!checkAttacked(piece.row, piece.col, isWhite)) {
+						return false;
+					}
+				}
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						if (isValidMove(new Move(this, piece, i, j))) {
+							return false;
+						}
+          }
+        }
+      }
+    }
+    return true;
+	}
+  
+	public boolean isStaleMated(boolean isWhite) {
+		for (Piece piece : pieceList) {
+			if (piece.iswhite == isWhite) {
+				if (piece.name.equals("King")) {
+					if (checkAttacked(piece.row, piece.col, isWhite)) {
+						return false;
+					}
+				}
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						if (isValidMove(new Move(this, piece, i, j))) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+    
 	}
 
 	public void status(Players p) {
@@ -574,6 +743,7 @@ public class Board extends JPanel{
 			default:
 				System.out.println("Continue!");
 		}
+
 	}
 	
 	public void paintComponent(Graphics g) {
