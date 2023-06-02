@@ -2,7 +2,7 @@ package main;
 import pieces.Piece;
 
 public class Move {
-	int oldrow, oldcol;
+	public int oldrow, oldcol;
 	public int newrow;
 	public int newcol;
 	

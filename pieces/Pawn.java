@@ -2,6 +2,7 @@ package pieces;
 import java.awt.image.BufferedImage;
 
 import main.Board;
+import main.Move;
 
 public class Pawn extends Piece{
 	boolean enPassantVulnerable = false;

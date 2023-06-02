@@ -1,8 +1,9 @@
+package main;
+
 import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
-import java.util.Scanner;
 
 public class Sound {
     // enter the game, each move, check, checkmate, stalemate
@@ -20,7 +21,7 @@ public class Sound {
 
                 // pauses the program for the duration of the sound
                 // ensures that the sound is played completely before the program terminates
-                Thread.sleep(clip.getMicrosecondLength() / 1000);
+                //Thread.sleep(clip.getMicrosecondLength() / 1000);
             }
             else {
                 return;
@@ -34,10 +35,4 @@ public class Sound {
         }
     }
 
-    public static void main(String[] args) {
-        // fileName must be .wav
-        String fileName = "Checkmate";
-
-        playSound("C:\\Users\\DELL\\IdeaProjects\\chessgame\\sound\\" + fileName + ".wav");
-    }
 }
