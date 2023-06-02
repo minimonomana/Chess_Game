@@ -1,24 +1,29 @@
 package main;
 
-import java.awt.Color;
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
-public class Main {
-	
-	
+public class Main extends JFrame {
+
 	public void startGame() {
 		JFrame frame = new JFrame();
-		frame.setSize(954, 778);
+		frame.setLayout(new BorderLayout());
+		frame.setSize(954, 678);
 		frame.setBackground(new Color(100, 100, 100));
-		//frame.getContentPane().setBackground(new Color(200, 200, 200));
-		//frame.setLayout(new GridBagLayout());
+
+		Board board = new Board();
+		ChessTimerGUI timer = new ChessTimerGUI();
+
+		frame.add(board, BorderLayout.WEST);
+		frame.add(timer, BorderLayout.EAST);
+
+//		frame.pack();
+//		frame.validate();
+
+		timer.startGame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		
-		Board board = new Board();
-		frame.add(board);
 		frame.setVisible(true);
-
 	}
 	
     public static void main(String[] args) {
