@@ -28,6 +28,8 @@ public class Main extends JFrame {
 	
     public static void main(String[] args) {
         Main chessGame = new Main();
-        chessGame.startGame();
+	Scanner input = new Scanner(System.in);
+	int mode = input.nextInt();
+        chessGame.startGame(mode);
     }
 }
