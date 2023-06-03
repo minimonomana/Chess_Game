@@ -2,16 +2,17 @@ package main;
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.Scanner;
 
 public class Main extends JFrame {
 
-	public void startGame() {
+	public void startGame(int mode) {
 		JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.setSize(954, 678);
 		frame.setBackground(new Color(100, 100, 100));
 
-		Board board = new Board();
+		Board board = new Board(mode);
 		ChessTimerGUI timer = new ChessTimerGUI(board);
 
 		frame.add(board);
