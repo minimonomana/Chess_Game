@@ -8,6 +8,12 @@ public class ChessMenu extends JFrame implements ActionListener {
     private CardLayout cardLayout;
     private JTextField textField1;
     private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JTextField textField6;
+    private JTextField textField7;
+    private JTextField textField8;
     int mode;
     String timeMode;
     
@@ -91,7 +97,7 @@ public class ChessMenu extends JFrame implements ActionListener {
         if(name.equals("menuPanel")) {
         	backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
         }
-        else if(name.equals("gamePanel")||name.equals("game2Panel")||name.equals("game3Panel")||name.equals("game4Panel")) {
+        else if(name.equals("gamePanel")) {
              backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
              // Create text fields
              textField1 = new JTextField(80);
@@ -105,8 +111,52 @@ public class ChessMenu extends JFrame implements ActionListener {
              textField2.setBounds(550, 400, 600, 120);
              panel.add(textField1);
              panel.add(textField2);
-
         }
+        else if(name.equals("game2Panel")) {
+            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            // Create text fields
+            textField3 = new JTextField(80);
+            textField4 = new JTextField(80);
+            // Set font size for text fields
+            Font textFieldFont = textField3.getFont().deriveFont(60f); // Specify the desired font size
+            textField3.setFont(textFieldFont);
+            textField4.setFont(textFieldFont);
+            // Set text fields' bounds
+            textField3.setBounds(550, 200, 600, 120);
+            textField4.setBounds(550, 400, 600, 120);
+            panel.add(textField3);
+            panel.add(textField4);
+       }
+        else if(name.equals("game3Panel")) {
+            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            // Create text fields
+            textField5 = new JTextField(80);
+            textField6 = new JTextField(80);
+            // Set font size for text fields
+            Font textFieldFont = textField5.getFont().deriveFont(60f); // Specify the desired font size
+            textField5.setFont(textFieldFont);
+            textField6.setFont(textFieldFont);
+            // Set text fields' bounds
+            textField5.setBounds(550, 200, 600, 120);
+            textField6.setBounds(550, 400, 600, 120);
+            panel.add(textField5);
+            panel.add(textField6);
+       }
+        else if(name.equals("game4Panel")) {
+            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            // Create text fields
+            textField7 = new JTextField(80);
+            textField8 = new JTextField(80);
+            // Set font size for text fields
+            Font textFieldFont = textField7.getFont().deriveFont(60f); // Specify the desired font size
+            textField7.setFont(textFieldFont);
+            textField8.setFont(textFieldFont);
+            // Set text fields' bounds
+            textField7.setBounds(550, 200, 600, 120);
+            textField8.setBounds(550, 400, 600, 120);
+            panel.add(textField7);
+            panel.add(textField8);
+       }
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
@@ -211,9 +261,25 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         }
         if (command.equals("bullet")||command.equals("blizt")||command.equals("rapid")) {
-        	
-            String text1 = textField1.getText();
-            String text2 = textField2.getText();
+        	String text1 = "Player 1";
+        	String text2 = "Player 2";
+        	if (mode == 0) {
+                text1 = textField1.getText();
+                text2 = textField2.getText();
+        	}
+        	if (mode == 3) {
+                text1 = textField3.getText();
+                text2 = textField4.getText();
+        	}
+        	if (mode == 1) {
+                text1 = textField5.getText();
+                text2 = textField6.getText();
+        	}
+        	if (mode == 2) {
+                text1 = textField7.getText();
+                text2 = textField8.getText();
+        	}
+
             System.out.println("Player 1: " + text1);
             System.out.println("Player 2: " + text2);
 
