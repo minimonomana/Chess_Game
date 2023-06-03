@@ -9,6 +9,7 @@ public class ChessMenu extends JFrame implements ActionListener {
     private JTextField textField1;
     private JTextField textField2;
     int mode;
+    String timeMode;
     
     public ChessMenu() {
         setTitle("LỳChess");
@@ -189,28 +190,28 @@ public class ChessMenu extends JFrame implements ActionListener {
             cardLayout.show(mainPanel, command);
         }
         if (command.equals("gamePanel")) {
-            System.out.println(true);
         	mode = 0;
-        	System.out.print(mode);
+        	System.out.println("Classic!");
 
         	
         }
         if (command.equals("game2Panel")) {
-        	mode = 2;
-        	System.out.print(mode);
+        	mode = 3;
+        	System.out.println("Blindfold!");
         }
         if (command.equals("game3Panel")) {
 
         	mode = 1;
-        	System.out.print(mode);
+        	System.out.println("Randomized!");
 
         }
         if (command.equals("game4Panel")) {
-        	mode = 3;
-        	System.out.print(mode);
+        	mode = 2;
+        	System.out.println("Advanced Blindfold!");
 
         }
         if (command.equals("bullet")||command.equals("blizt")||command.equals("rapid")) {
+        	
             String text1 = textField1.getText();
             String text2 = textField2.getText();
             System.out.println("Player 1: " + text1);
@@ -218,7 +219,7 @@ public class ChessMenu extends JFrame implements ActionListener {
 
             System.out.println("Game mode: " + command);
             Main chessGame = new Main();
-            chessGame.startGame(mode);
+            chessGame.startGame(mode, command);
         }
 
 
