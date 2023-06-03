@@ -19,6 +19,8 @@ public class ChessTimerGUI extends JPanel {
     static JLabel labelTimer2;
     static Timer timer1Obj; // Timer objects to control the timing functionality
     static Timer timer2Obj;
+    static Board board;
+    static boolean canStart;
 
     public ChessTimerGUI() {
 
@@ -60,40 +62,66 @@ public class ChessTimerGUI extends JPanel {
         timer2 = 20;
 
         isTimerRunning = false;
-        isTimer1Active = false;
-        isTimer2Active = true;
+        isTimer1Active = true;
+        isTimer2Active = false;
+        canStart = false;
+
+        // Set layout for this panel
+        setLayout(new BorderLayout());
+
+        // Create and set layout for main panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+
+        // this (BorderLayout)
+        // <- panel (GridBagLayout)
+        // <- backgroundPanel
+        // <- timersPanel (GridLayout)
+        // <- labelTimer1, labelTimer2
 
         // Create labels for timer display
-        labelTimer1 = new JLabel(formatTime(timer1));
-        labelTimer1.setFont(new Font("Arial", Font.PLAIN, 20));
+        labelTimer1 = new JLabel("Player 1: " + formatTime(timer1));
+        labelTimer1.setFont(new Font("Arial", Font.BOLD, 30));
         labelTimer1.setOpaque(true);
-        labelTimer1.setBackground(Color.black);
-        labelTimer1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        labelTimer1.setBackground(Color.BLACK);
+        labelTimer1.setForeground(Color.WHITE);
 
-        labelTimer2 = new JLabel(formatTime(timer2));
-        labelTimer2.setFont(new Font("Arial", Font.PLAIN, 20));
+        labelTimer2 = new JLabel("Player 2: " + formatTime(timer2));
+        labelTimer2.setFont(new Font("Arial", Font.BOLD, 30));
         labelTimer2.setOpaque(true);
-        labelTimer2.setBackground(Color.white);
-        labelTimer2.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        labelTimer2.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+        labelTimer2.setBackground(Color.BLACK);
+        labelTimer2.setForeground(Color.WHITE);
 
-        // Set layout and Add components to the panel
-        setLayout(new GridLayout(2, 1));
-        add(labelTimer1);
-        add(labelTimer2);
+        // Create background panel
+        JPanel backgroundPanel = new JPanel();
+        backgroundPanel.setLayout(new BorderLayout());
+
+        // Create timers panel
+        JPanel timersPanel = new JPanel();
+        timersPanel.setLayout(new GridLayout(2, 1, 0, 50));
+        timersPanel.setBackground(Color.BLACK);
+        timersPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
+        timersPanel.add(labelTimer1);
+        timersPanel.add(labelTimer2);
+
+        // Add panels
+        backgroundPanel.add(timersPanel, BorderLayout.CENTER);
+        panel.add(backgroundPanel);
+        add(panel, BorderLayout.CENTER);
 
         // Set panel properties
-        // setPreferredSize() thay vi setSize() de size linh hoat hon
-        setPreferredSize(new Dimension(150, 300));
-        setVisible(true);
+        setPreferredSize(new Dimension(300, 200));
+        setBackground(new Color(53, 53, 53));
     }
 
     // Automatically start Timer2 at the start of the game
     public void startGame() {
-        isTimerRunning = true;
-        timer2Obj = new Timer(1000, new TimerAction(timer2, labelTimer2));
-        startTime2 = (int) System.currentTimeMillis() / 1000;
-        timer2Obj.start();
+        if (canStart) {
+            isTimerRunning = true;
+            timer1Obj = new Timer(1000, new TimerAction(timer1, labelTimer1));
+            startTime1 = (int) System.currentTimeMillis() / 1000;
+            timer1Obj.start();
+        }
     }
 
     // Formats the given time in minutes and seconds
@@ -153,21 +181,28 @@ public class ChessTimerGUI extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            time--;
-//            label.setText(isTimer1Active ? "Player 1: " + formatTime(time) : "Player 2: " + formatTime(time));
-            label.setText(formatTime(time));
-            System.out.println("Time in actionPerformed(): " + time);
-            System.out.println("isTimer1Active-isTimer2Active: " + isTimer1Active + "-" + isTimer2Active);
-            if (time <= 0) {
-                // Player's time has run out
-                if (isTimer1Active) {
-                    timer1Obj.stop();
-                } else {
-                    timer2Obj.stop();
+            if (canStart) {
+                time--;
+                label.setText(isTimer1Active ? "Player 1: \n" + formatTime(time) : "Player 2: \n" + formatTime(time));
+
+                // Set red background if player has less than 30 seconds less
+                if (time < 30) {
+                    label.setBackground(new Color(232, 103, 103));
                 }
-                isTimerRunning = false;
-                // Display a message dialog when a player's time runs out, indicating the winner of the game.
-                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), isTimer1Active ? "Player 2 wins!" : "Player 1 wins!");
+
+                System.out.println("Time in actionPerformed(): " + time);
+                System.out.println("isTimer1Active-isTimer2Active: " + isTimer1Active + "-" + isTimer2Active);
+                if (time <= 0) {
+                    // Player's time has run out
+                    if (isTimer1Active) {
+                        timer1Obj.stop();
+                    } else {
+                        timer2Obj.stop();
+                    }
+                    isTimerRunning = false;
+                    // Display a message dialog when a player's time runs out, indicating the winner of the game.
+                    JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), isTimer1Active ? "Player 2 wins!" : "Player 1 wins!");
+                }
             }
         }
     }
