@@ -36,13 +36,13 @@ public class Board extends JPanel{
 	int[] fakeBlack;
 	int[] fakeWhite;
 	
-	public Board(){
+	public Board(int mode){
 		this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
 		this.setBackground(Color.GRAY);
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
 		Scanner input = new Scanner(System.in);
-		mode = input.nextInt();
+		//mode = input.nextInt();
 		if (mode == 0) {
 			this.resetBoard();
 		}
