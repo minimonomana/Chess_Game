@@ -2,6 +2,7 @@ package main;
 
 public class Players {
 	private boolean player;
+	String name;
 	int score = 0;
 	
 	Players(boolean player){

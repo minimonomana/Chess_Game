@@ -7,8 +7,8 @@ import pieces.Piece;
 
 public class Input extends MouseAdapter{
 
-	ChessTimerGUI timer = new ChessTimerGUI();
 	Board board;
+	ChessTimerGUI timer = new ChessTimerGUI(board);
 	
 	public Input(Board board) {
 		this.board = board;
@@ -25,14 +25,26 @@ public class Input extends MouseAdapter{
 		
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
 		
-		if ((col > 7 || row > 7) && (board.mode == 0 || board.mode == 1)) {
+		if ((e.getX() > 9 * board.tileSize && e.getX() <= 9 * board.tileSize + 40 &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40) && (board.mode == 0 || board.mode == 1)) {
 			board.undo();
+			timer.changeTimer(true);
 			board.repaint();
+		}
+
+		if ((e.getX() > 9 * board.tileSize + 40 && e.getX() <= 9 * board.tileSize + 80 &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40)) {
+			board.status = GameStatus.RESIGNATION;
+			System.out.println("Resign!");
+			//board.repaint();
+		}
+
+		if ((e.getX() >= 9 * board.tileSize - 40 && e.getX() <= 9 * board.tileSize &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40)) {
+			board.status = GameStatus.OFFER_A_DRAW;
+			System.out.println("Offering a draw!");
+			//board.repaint();
 		}
 		
 		if (board.selectedpiece != null) {

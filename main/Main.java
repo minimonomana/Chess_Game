@@ -12,9 +12,9 @@ public class Main extends JFrame {
 		frame.setBackground(new Color(100, 100, 100));
 
 		Board board = new Board();
-		ChessTimerGUI timer = new ChessTimerGUI();
+		ChessTimerGUI timer = new ChessTimerGUI(board);
 
-		frame.add(board, BorderLayout.WEST);
+		frame.add(board);
 		frame.add(timer, BorderLayout.EAST);
 
 //		frame.pack();
