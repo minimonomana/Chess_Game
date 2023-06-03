@@ -35,7 +35,6 @@ public class ChessMenu extends JFrame implements ActionListener {
         JPanel modePanel = createSubPanel("game2Panel", "menuPanel");
         JPanel settingsPanel = createSubPanel("game4Panel", "menuPanel");
 
-
         // Add the sub-panels to the main panel
         mainPanel.add(menuPanel, "menuPanel");
         mainPanel.add(gamePanel, "gamePanel");
@@ -43,14 +42,12 @@ public class ChessMenu extends JFrame implements ActionListener {
         mainPanel.add(modePanel, "game2Panel");
         mainPanel.add(settingsPanel, "game4Panel");
 
-        
         // Set the main panel as the content pane
         setContentPane(mainPanel);
 
         // Show the main panel
         cardLayout.show(mainPanel, "menuPanel");
     }
-
     
     private void setButton(JButton button, String path) {
         // Create an ImageIcon with the texture image
@@ -81,8 +78,6 @@ public class ChessMenu extends JFrame implements ActionListener {
         button.setBorder(null);
     }
 
-
-
     private JPanel createSubPanel(String name, String... buttons) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -93,27 +88,27 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         // Add the background image to the layered pane
         ImageIcon backgroundImage = null;
-        backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
+        backgroundImage = new ImageIcon("resources\\menu.png");
         if(name.equals("menuPanel")) {
-        	backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
+        	backgroundImage = new ImageIcon("resources\\menu.png");
         }
         else if(name.equals("gamePanel")) {
-             backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
-             // Create text fields
-             textField1 = new JTextField(80);
-             textField2 = new JTextField(80);
-             // Set font size for text fields
-             Font textFieldFont = textField1.getFont().deriveFont(60f); // Specify the desired font size
-             textField1.setFont(textFieldFont);
-             textField2.setFont(textFieldFont);
-             // Set text fields' bounds
-             textField1.setBounds(550, 200, 600, 120);
-             textField2.setBounds(550, 400, 600, 120);
-             panel.add(textField1);
-             panel.add(textField2);
+            backgroundImage = new ImageIcon("resources\\game.png");
+            // Create text fields
+            textField1 = new JTextField(80);
+            textField2 = new JTextField(80);
+            // Set font size for text fields
+            Font textFieldFont = textField1.getFont().deriveFont(60f); // Specify the desired font size
+            textField1.setFont(textFieldFont);
+            textField2.setFont(textFieldFont);
+            // Set text fields' bounds
+            textField1.setBounds(550, 200, 600, 120);
+            textField2.setBounds(550, 400, 600, 120);
+            panel.add(textField1);
+            panel.add(textField2);
         }
         else if(name.equals("game2Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
+            backgroundImage = new ImageIcon("resources\\game.png");
             // Create text fields
             textField3 = new JTextField(80);
             textField4 = new JTextField(80);
@@ -126,9 +121,9 @@ public class ChessMenu extends JFrame implements ActionListener {
             textField4.setBounds(550, 400, 600, 120);
             panel.add(textField3);
             panel.add(textField4);
-       }
+        }
         else if(name.equals("game3Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
+            backgroundImage = new ImageIcon("resources\\game.png");
             // Create text fields
             textField5 = new JTextField(80);
             textField6 = new JTextField(80);
@@ -141,9 +136,9 @@ public class ChessMenu extends JFrame implements ActionListener {
             textField6.setBounds(550, 400, 600, 120);
             panel.add(textField5);
             panel.add(textField6);
-       }
+        }
         else if(name.equals("game4Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
+            backgroundImage = new ImageIcon("resources\\game.png");
             // Create text fields
             textField7 = new JTextField(80);
             textField8 = new JTextField(80);
@@ -156,16 +151,13 @@ public class ChessMenu extends JFrame implements ActionListener {
             textField8.setBounds(550, 400, 600, 120);
             panel.add(textField7);
             panel.add(textField8);
-       }
+        }
 
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
         layeredPane.add(backgroundLabel, Integer.valueOf(0));
         panel.add(backgroundLabel, BorderLayout.CENTER);
         
-        
-
-
         JLabel label = new JLabel(name);
         label.setFont(new Font("Arial", Font.BOLD, 24));
         label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -178,14 +170,14 @@ public class ChessMenu extends JFrame implements ActionListener {
         JButton[] menuButtons = new JButton[buttons.length];
         int buttonY = 28;
         String[] pathToButtonTexture = {
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\newgamebutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\modesbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\recordsbuttom.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\settingsbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\backbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\bullet.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\blizt.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\rapid.png"
+                "resources\\newgamebutton.png",
+                "resources\\modesbutton.png",
+                "resources\\recordsbuttom.png",
+                "resources\\settingsbutton.png",
+                "resources\\backbutton.png",
+                "resources\\bullet.png",
+                "resources\\blizt.png",
+                "resources\\rapid.png"
         };
 
         if(name.equals("menuPanel")) {
@@ -195,7 +187,6 @@ public class ChessMenu extends JFrame implements ActionListener {
                 menuButtons[i].addActionListener(this);
                 menuButtons[i].setBounds(85, buttonY, 500, 144);
                 buttonY += 190;
-
 
                 setButton(menuButtons[i], pathToButtonTexture[i]);
                 buttonPanel.add(menuButtons[i]);
@@ -241,9 +232,7 @@ public class ChessMenu extends JFrame implements ActionListener {
         }
         if (command.equals("gamePanel")) {
         	mode = 0;
-        	System.out.println("Classic!");
-
-        	
+        	System.out.println("Classic!");        	
         }
         if (command.equals("game2Panel")) {
         	mode = 3;
@@ -287,8 +276,6 @@ public class ChessMenu extends JFrame implements ActionListener {
             Main chessGame = new Main();
             chessGame.startGame(mode, command);
         }
-
-
     }
 
     public static void main(String[] args) {

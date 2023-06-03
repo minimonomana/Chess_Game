@@ -56,7 +56,7 @@ public class Board extends JPanel{
 		}
 
 		status = GameStatus.ACTIVE;
-		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
+		Sound.playSound("resources\\StartEndGame.wav");
 		timer = new ChessTimerGUI(this, "");
 	
 		p1 = new Players(true);
@@ -281,10 +281,10 @@ public class Board extends JPanel{
 	
 	public void move(Move m) {
 		if (m.capture != null){
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Capture.wav");
+			Sound.playSound("resources\\Capture.wav");
 		}
 		else{
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
+			Sound.playSound("resources\\Move.wav");
 		}
 		
 		if (m.piece.name.equals("King")) {
