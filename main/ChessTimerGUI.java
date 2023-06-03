@@ -1,7 +1,7 @@
 package main;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
+//import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -19,10 +19,11 @@ public class ChessTimerGUI extends JPanel {
     static JLabel labelTimer2;
     static Timer timer1Obj; // Timer objects to control the timing functionality
     static Timer timer2Obj;
+
     static Board board;
     static boolean canStart;
 
-    public ChessTimerGUI() {
+    public ChessTimerGUI(Board board) {
 
         /* Set timer values as game mode
         - Ultrabullet: 15
@@ -58,8 +59,9 @@ public class ChessTimerGUI extends JPanel {
 //                break;
 //        }
 
-        timer1 = 20;
-        timer2 = 20;
+        timer1 = 10;
+        timer2 = 10;
+        this.board = board;
 
         isTimerRunning = false;
         isTimer1Active = true;
@@ -141,14 +143,14 @@ public class ChessTimerGUI extends JPanel {
                 endTime1 = (int) System.currentTimeMillis() / 1000;
                 timer1Obj.stop();
                 timer1 = timer1 - (endTime1 - startTime1);
-                System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
+                //System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
                 isTimer1Active = false;
                 isTimer2Active = true;
             } else {
                 endTime2 = (int) System.currentTimeMillis() / 1000;
                 timer2Obj.stop();
                 timer2 = timer2 - (endTime2 - startTime2);
-                System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
+                //System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
                 isTimer2Active = false;
                 isTimer1Active = true;
             }
@@ -202,6 +204,7 @@ public class ChessTimerGUI extends JPanel {
                     isTimerRunning = false;
                     // Display a message dialog when a player's time runs out, indicating the winner of the game.
                     JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), isTimer1Active ? "Player 2 wins!" : "Player 1 wins!");
+
                 }
             }
         }

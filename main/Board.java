@@ -28,7 +28,7 @@ public class Board extends JPanel{
 	int rows = 8;
 	Players p1;
 	Players p2;
-	ChessTimerGUI timer;
+	// ChessTimerGUI timer;
 	int mode;
 
 	GameStatus status;
@@ -763,7 +763,7 @@ public class Board extends JPanel{
 		g2d.fillRect(9 * tileSize + 80, 4 * tileSize, tileSize - 40, tileSize - 40);
 		g2d.drawImage(Piece.undoImage, 9 * tileSize, 4 * tileSize, tileSize - 40, tileSize - 40, null);
 		g2d.drawImage(Piece.resignImage, 9 * tileSize + 40, 4 * tileSize, tileSize - 40, tileSize - 40, null);
-		g2d.drawImage(Piece.drawImage, 9 * tileSize + 80, 4 * tileSize, tileSize - 40, tileSize - 40, null);
+		g2d.drawImage(Piece.drawImage, 9 * tileSize - 40, 4 * tileSize, tileSize - 40, tileSize - 40, null);
 		
 		if (selectedpiece != null) {
 			
