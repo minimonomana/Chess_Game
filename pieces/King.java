@@ -101,8 +101,31 @@ public class King extends Piece{
 		
 	}
 	
-	public boolean canAttack(int row, int col) {
-		return canMove(row, col);
+	public boolean canAttack(int newrow, int newcol) {
+		int x1 = this.row;
+		int y1 = this.col;
+		int x2 = newrow;
+		int y2 = newcol;
+		
+		if (x1 == x2 && y1 == y2) {
+			return false;
+		}
+		else if((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) > 2) {
+			return false;
+		}
+		else {
+			if (board.get(x2, y2) == null ||(board.get(x2, y2) != null)) {
+				if (!board.checkAttacked(x2, y2, this.iswhite)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
 	}
 	
 	public boolean isAttacked() {

@@ -93,12 +93,12 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         // Add the background image to the layered pane
         ImageIcon backgroundImage = null;
-        backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
+        backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
         if(name.equals("menuPanel")) {
-        	backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
+        	backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
         }
         else if(name.equals("gamePanel")) {
-             backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+             backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
              // Create text fields
              textField1 = new JTextField(80);
              textField2 = new JTextField(80);
@@ -113,7 +113,7 @@ public class ChessMenu extends JFrame implements ActionListener {
              panel.add(textField2);
         }
         else if(name.equals("game2Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
             // Create text fields
             textField3 = new JTextField(80);
             textField4 = new JTextField(80);
@@ -128,7 +128,7 @@ public class ChessMenu extends JFrame implements ActionListener {
             panel.add(textField4);
        }
         else if(name.equals("game3Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
             // Create text fields
             textField5 = new JTextField(80);
             textField6 = new JTextField(80);
@@ -143,7 +143,7 @@ public class ChessMenu extends JFrame implements ActionListener {
             panel.add(textField6);
        }
         else if(name.equals("game4Panel")) {
-            backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
+            backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
             // Create text fields
             textField7 = new JTextField(80);
             textField8 = new JTextField(80);
@@ -178,14 +178,14 @@ public class ChessMenu extends JFrame implements ActionListener {
         JButton[] menuButtons = new JButton[buttons.length];
         int buttonY = 28;
         String[] pathToButtonTexture = {
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\newgamebutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\modesbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\recordsbuttom.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\settingsbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\backbutton.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\bullet.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\blizt.png",
-                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\rapid.png"
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\newgamebutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\modesbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\recordsbuttom.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\settingsbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\backbutton.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\bullet.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\blizt.png",
+                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\rapid.png"
         };
 
         if(name.equals("menuPanel")) {

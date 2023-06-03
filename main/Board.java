@@ -10,7 +10,6 @@ import java.util.Stack;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.JPanel;
 
@@ -23,12 +22,12 @@ public class Board extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public int tileSize = 100;
+	public int tileSize = 80;
 	int cols = 8;
 	int rows = 8;
 	Players p1;
 	Players p2;
-	// ChessTimerGUI timer;
+	ChessTimerGUI timer;
 	int mode;
 
 	GameStatus status;
@@ -41,8 +40,7 @@ public class Board extends JPanel{
 		this.setBackground(Color.GRAY);
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
-		Scanner input = new Scanner(System.in);
-		//mode = input.nextInt();
+	
 		this.mode = mode;
 		if (mode == 0) {
 			this.resetBoard();
@@ -57,14 +55,10 @@ public class Board extends JPanel{
 			this.semiFakeChess();
 		}
 
-		this.status = GameStatus.ACTIVE;
-		Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\StartEndGame.wav");
-//		timer = new ChessTimerGUI();
-//		this.add(timer);
-		
-		
-		input.close();
-		
+		status = GameStatus.ACTIVE;
+		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
+		timer = new ChessTimerGUI(this, "");
+	
 		p1 = new Players(true);
 		p2 = new Players(false);
 	}
@@ -287,10 +281,10 @@ public class Board extends JPanel{
 	
 	public void move(Move m) {
 		if (m.capture != null){
-			Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Capture.wav");
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Capture.wav");
 		}
 		else{
-			Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Move.wav");
+			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
 		}
 		
 		if (m.piece.name.equals("King")) {
@@ -320,10 +314,15 @@ public class Board extends JPanel{
 		}
 		if (isCheckMated(p1.turn())) {
 			System.out.println("CHECKMATE!!!");
+			this.status = GameStatus.WHITE_WIN;
+		}
+		if (isCheckMated(p2.turn())) {
+			System.out.println("CHECKMATE!!!");
+			this.status = GameStatus.BLACK_WIN;
 		}
 		if (isStaleMated(p1.turn())) {
 			System.out.println("Stalemate.");
-
+			this.status = GameStatus.DRAW;
 		}
 
 		if ((mode == 2 || mode == 3) && !m.piece.hasFakeMoved){
@@ -374,7 +373,7 @@ public class Board extends JPanel{
 			pieceList.add(fakePiece);
 			fakePiece.hasFakeMoved = true;
 		}
-		win(p1);
+		win();
 		
 	}
 	
@@ -504,6 +503,16 @@ public class Board extends JPanel{
 	}
 	
 	public boolean isValidMove(Move move) {
+		if (ChessTimerGUI.timer1 <= 0){
+			this.status = GameStatus.BLACK_WIN;
+			timer.stopTimer();
+			return false;
+		}
+		if (ChessTimerGUI.timer2 <= 0){
+			this.status = GameStatus.WHITE_WIN;
+			timer.stopTimer();
+			return false;
+		}
 
 		int rowKing = 0;
 		int colKing = 0;
@@ -663,11 +672,11 @@ public class Board extends JPanel{
 						if (isValidMove(new Move(this, piece, i, j))) {
 							return false;
 						}
-          }
-        }
-      }
-    }
-    return true;
+          			}
+        		}
+      		}
+    	}
+    	return true;
 	}
   
 	public boolean isStaleMated(boolean isWhite) {
@@ -690,61 +699,36 @@ public class Board extends JPanel{
 		return true;
     
 	}
-
-	public void status(Players p) {
+	
+	public boolean win() {
 		if (this.status == GameStatus.RESIGNATION){
 			System.out.println(0);
-			this.status = p.turn() ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
+			this.status = p2.turn() ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
 		}
-		if (this.status == GameStatus.OFFER_A_DRAW){
+		else if (this.status == GameStatus.OFFER_A_DRAW){
 			System.out.println(1);
 			this.status = GameStatus.DRAW;
 		}
 
-		Piece king = null;
-		for (Piece piece: pieceList) {
-			if (piece.name.equals("King") && piece.iswhite == p.turn()) {
-				king = piece;
-			}
-			for (int r = 0; r < 8; r++) {
-				for (int c = 0; c < 8; c++){
-					if (isValidMove(new Move(this, piece, r, c))) {
-						this.status = GameStatus.ACTIVE;
-						return;
-					}
-				}
-			}
+		if (this.status == GameStatus.WHITE_WIN){
+			System.out.println("White win!");
+			timer.stopTimer();
+			new EndGameScreen(p1.turn(), GameStatus.WHITE_WIN);
+			return true;
 		}
-		
-		if (!king.isAttacked()) {
-			status = GameStatus.STALEMATE;
-			System.out.println(2);
+		else if (this.status == GameStatus.BLACK_WIN){
+			System.out.println("Black win!");
+			timer.stopTimer();
+			new EndGameScreen(p2.turn(), GameStatus.WHITE_WIN);
+			return true;
 		}
-		else if(king.isAttacked() && king.iswhite) {
-			status = GameStatus.BLACK_WIN;
-			System.out.println(3);
+		else if (this.status == GameStatus.DRAW){
+			System.out.println("Draw!");
+			timer.stopTimer();
+			new EndGameScreen(p1.turn(), GameStatus.DRAW);
+			return true;
 		}
-		else if(king.isAttacked() && !king.iswhite) {
-			status = GameStatus.WHITE_WIN;
-			System.out.println(4);
-		}
-		
-	}
-	
-	public void win(Players p) {
-		switch (this.status) {
-			// case ACTIVE:
-			// 	System.out.println("Continue!");
-			case WHITE_WIN:
-				System.out.println("White win!");
-			case BLACK_WIN:
-				System.out.println("Black win!");
-			case DRAW:
-				System.out.println("Draw!");
-			default:
-				System.out.println("Continue!");
-		}
-
+		return false;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -792,6 +776,4 @@ public class Board extends JPanel{
 			
 		}
 	}
-	
-
 }

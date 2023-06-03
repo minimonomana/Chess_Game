@@ -1,8 +1,6 @@
 package main;
-import java.util.Scanner;
 
 import javax.swing.*;
-//import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -24,31 +22,17 @@ public class ChessTimerGUI extends JPanel {
     static Board board;
     static boolean canStart;
     
-    
-    
     public ChessTimerGUI(Board board, String timeMode) {
-
-        /* Set timer values as game mode
-        - Ultrabullet: 15
-        - Bullet: 60
-        - Blitz: 300
-        - Rapid: 900
-        - Traditional: 3600
-         */
-
-
 
         if (timeMode.equals("bullet")) {
             timer1 = timer2 = 60;
-            }
+        }
         if (timeMode.equals("blizt")) {
             timer1 = timer2 = 180;
-            }
+        }
         if (timeMode.equals("rapid")) {
             timer1 = timer2 = 600;
-            }
-
-        this.board = board;
+        }
 
         isTimerRunning = false;
         isTimer1Active = true;
@@ -61,12 +45,6 @@ public class ChessTimerGUI extends JPanel {
         // Create and set layout for main panel
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-
-        // this (BorderLayout)
-        // <- panel (GridBagLayout)
-        // <- backgroundPanel
-        // <- timersPanel (GridLayout)
-        // <- labelTimer1, labelTimer2
 
         // Create labels for timer display
         labelTimer1 = new JLabel("Player 1: " + formatTime(timer1));
@@ -120,6 +98,14 @@ public class ChessTimerGUI extends JPanel {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    public void stopTimer(){
+        isTimer1Active = false;
+        isTimer2Active = false;
+        timer1Obj.stop();
+        timer2Obj.stop();
+        System.out.println("ahahahahah");
+    }
+
     // Handles the action performed when a move is made.
     // Starts or stops the timers based on the current player's turn.
     public void changeTimer(boolean changed) {
@@ -133,7 +119,7 @@ public class ChessTimerGUI extends JPanel {
                 //System.out.println("Player 1-2 time remaining: " + timer1 + "-" + timer2);
                 isTimer1Active = false;
                 isTimer2Active = true;
-            } else {
+            } else if (isTimer2Active){
                 endTime2 = (int) System.currentTimeMillis() / 1000;
                 timer2Obj.stop();
                 timer2 = timer2 - (endTime2 - startTime2);
@@ -148,7 +134,7 @@ public class ChessTimerGUI extends JPanel {
             timer1Obj = new Timer(1000, new TimerAction(timer1, labelTimer1));
             startTime1 = (int) System.currentTimeMillis() / 1000;
             timer1Obj.start();
-        } else {
+        } else if (isTimer2Active){
             timer2Obj = new Timer(1000, new TimerAction(timer2, labelTimer2));
             startTime2 = (int) System.currentTimeMillis() / 1000;
             timer2Obj.start();
@@ -179,13 +165,11 @@ public class ChessTimerGUI extends JPanel {
                     label.setBackground(new Color(232, 103, 103));
                 }
 
-                System.out.println("Time in actionPerformed(): " + time);
-                System.out.println("isTimer1Active-isTimer2Active: " + isTimer1Active + "-" + isTimer2Active);
                 if (time <= 0) {
                     // Player's time has run out
                     if (isTimer1Active) {
                         timer1Obj.stop();
-                    } else {
+                    } else if (isTimer2Active){
                         timer2Obj.stop();
                     }
                     isTimerRunning = false;
@@ -196,10 +180,4 @@ public class ChessTimerGUI extends JPanel {
             }
         }
     }
-
-//    public static void main(String[] args) {
-//        new ChessTimerGUI();
-//    }
-
-    // setLookAndFeel()
 }

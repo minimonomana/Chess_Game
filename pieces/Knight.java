@@ -36,8 +36,20 @@ public class Knight extends Piece{
 		return false;
     }
 	
-	public boolean canAttack(int row, int col) {
-		return canMove(row, col);
+	public boolean canAttack(int newrow, int newcol) {
+		int x1 = this.row;
+		int y1 = this.col;
+		int x2 = newrow;
+		int y2 = newcol;
+
+        int diffX = Math.abs(x1 - x2);
+        int diffY = Math.abs(y1 - y2);
+        
+        if (board.get(x2, y2) == null ||(board.get(x2, y2) != null)) {
+        	return (diffX == 1 && diffY == 2) || (diffX == 2 && diffY == 1);
+        }
+
+		return false;
 	}
 
 }
