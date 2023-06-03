@@ -23,7 +23,7 @@ public class Board extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public int tileSize = 80;
+	public int tileSize = 100;
 	int cols = 8;
 	int rows = 8;
 	Players p1;
@@ -43,6 +43,7 @@ public class Board extends JPanel{
 		this.addMouseMotionListener(input);
 		Scanner input = new Scanner(System.in);
 		//mode = input.nextInt();
+		this.mode = mode;
 		if (mode == 0) {
 			this.resetBoard();
 		}
@@ -57,7 +58,7 @@ public class Board extends JPanel{
 		}
 
 		this.status = GameStatus.ACTIVE;
-		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\StartEndGame.wav");
+		Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\StartEndGame.wav");
 //		timer = new ChessTimerGUI();
 //		this.add(timer);
 		
@@ -286,10 +287,10 @@ public class Board extends JPanel{
 	
 	public void move(Move m) {
 		if (m.capture != null){
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Capture.wav");
+			Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Capture.wav");
 		}
 		else{
-			Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
+			Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Move.wav");
 		}
 		
 		if (m.piece.name.equals("King")) {
@@ -378,7 +379,7 @@ public class Board extends JPanel{
 	}
 	
 	public void undo() {
-		Sound.playSound("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\Move.wav");
+		Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Move.wav");
 		Move m = moveList.pop();
 		if (m.piece.name.equals("King")) {
 			if (Math.abs(m.newcol - m.oldcol) > 1) {
