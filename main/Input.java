@@ -8,7 +8,7 @@ import pieces.Piece;
 public class Input extends MouseAdapter{
 
 	Board board;
-	ChessTimerGUI timer = new ChessTimerGUI(board);
+	ChessTimerGUI timer = new ChessTimerGUI(board, "");
 	
 	public Input(Board board) {
 		this.board = board;

@@ -53,7 +53,6 @@ public class King extends Piece{
 	}
 	
 	public boolean canCastle(int newrow, int newcol) {
-
 		if (hasMoved){
 			return false;
 		}

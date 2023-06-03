@@ -20,10 +20,7 @@ public class Knight extends Piece{
 		
 	}
 
-	@Override
 	public boolean canMove(int newrow, int newcol) {
-        // A knight can move to a spot that is 2 squares away vertically and 1 square away horizontally
-        // or 1 square away vertically and 2 squares away horizontally
 		int x1 = this.row;
 		int y1 = this.col;
 		int x2 = newrow;
