@@ -8,7 +8,7 @@ public class ChessMenu extends JFrame implements ActionListener {
     private CardLayout cardLayout;
     private JTextField textField1;
     private JTextField textField2;
-    int gameMode = 0;
+    int mode;
     
     public ChessMenu() {
         setTitle("LỳChess");
@@ -86,13 +86,12 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         // Add the background image to the layered pane
         ImageIcon backgroundImage = null;
-        
-        backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
+        backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
         if(name.equals("menuPanel")) {
-        	backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\menu.png");
+        	backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\menu.png");
         }
         else if(name.equals("gamePanel")||name.equals("game2Panel")||name.equals("game3Panel")||name.equals("game4Panel")) {
-             backgroundImage = new ImageIcon("C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\game.png");
+             backgroundImage = new ImageIcon("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\game.png");
              // Create text fields
              textField1 = new JTextField(80);
              textField2 = new JTextField(80);
@@ -128,14 +127,14 @@ public class ChessMenu extends JFrame implements ActionListener {
         JButton[] menuButtons = new JButton[buttons.length];
         int buttonY = 28;
         String[] pathToButtonTexture = {
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\newgamebutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\modesbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\recordsbuttom.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\settingsbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\backbutton.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\bullet.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\blizt.png",
-                "C:\\Users\\nguye\\Downloads\\Git\\Chess_Game\\resources\\rapid.png"
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\newgamebutton.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\modesbutton.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\recordsbuttom.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\settingsbutton.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\backbutton.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\bullet.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\blizt.png",
+                "C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\rapid.png"
         };
 
         if(name.equals("menuPanel")) {
@@ -191,41 +190,37 @@ public class ChessMenu extends JFrame implements ActionListener {
         }
         if (command.equals("gamePanel")) {
             System.out.println(true);
-        	gameMode = 0;
+        	mode = 0;
+        	System.out.print(mode);
+
+        	
         }
         if (command.equals("game2Panel")) {
-        	gameMode = 1;
+        	mode = 2;
+        	System.out.print(mode);
         }
         if (command.equals("game3Panel")) {
-        	gameMode = 2;
+
+        	mode = 1;
+        	System.out.print(mode);
+
         }
         if (command.equals("game4Panel")) {
-        	gameMode = 3;
+        	mode = 3;
+        	System.out.print(mode);
+
         }
-        if (command.equals("bullet")) {
+        if (command.equals("bullet")||command.equals("blizt")||command.equals("rapid")) {
             String text1 = textField1.getText();
             String text2 = textField2.getText();
             System.out.println("Player 1: " + text1);
             System.out.println("Player 2: " + text2);
 
-            System.out.println("bullet");
+            System.out.println("Game mode: " + command);
+            Main chessGame = new Main();
+            chessGame.startGame(mode);
         }
-        if (command.equals("blizt")) {
-            String text1 = textField1.getText();
-            String text2 = textField2.getText();
-            System.out.println("Player 1: " + text1);
-            System.out.println("Player 2: " + text2);
 
-            System.out.println("blizt");
-        }
-        if (command.equals("rapid")) {
-            String text1 = textField1.getText();
-            String text2 = textField2.getText();
-            System.out.println("Player 1: " + text1);
-            System.out.println("Player 2: " + text2);
-
-            System.out.println("rapid");
-        }
 
     }
 
