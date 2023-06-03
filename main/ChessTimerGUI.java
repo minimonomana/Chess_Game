@@ -1,4 +1,5 @@
 package main;
+import java.util.Scanner;
 
 import javax.swing.*;
 //import javax.swing.border.BevelBorder;
@@ -22,8 +23,10 @@ public class ChessTimerGUI extends JPanel {
 
     static Board board;
     static boolean canStart;
-
-    public ChessTimerGUI(Board board) {
+    
+    
+    
+    public ChessTimerGUI(Board board, String timeMode) {
 
         /* Set timer values as game mode
         - Ultrabullet: 15
@@ -33,34 +36,18 @@ public class ChessTimerGUI extends JPanel {
         - Traditional: 3600
          */
 
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Which game mode would you like to play? (Ultrabullet, Bullet, Blitz, Rapid, Traditional)");
-//        String mode = scanner.next();
-//
-//        switch (mode) {
-//            case "Ultrabullet":
-//                timer1 = timer2 = 15;
-//                break;
-//            case "Bullet":
-//                timer1 = timer2 = 60;
-//                break;
-//            case "Blitz":
-//                timer1 = timer2 = 300; +-5
-//                break;
-//            case "Rapid":
-//                timer1 = timer2 = 900;
-//                break;
-//            case "Traditional":
-//                timer1 = timer2 = 3600;
-//                break;
-//            default:
-//                timer1 = scanner.nextInt();
-//                timer2 = scanner.nextInt();
-//                break;
-//        }
 
-        timer1 = 10;
-        timer2 = 10;
+
+        if (timeMode.equals("bullet")) {
+            timer1 = timer2 = 60;
+            }
+        if (timeMode.equals("blizt")) {
+            timer1 = timer2 = 180;
+            }
+        if (timeMode.equals("rapid")) {
+            timer1 = timer2 = 600;
+            }
+
         this.board = board;
 
         isTimerRunning = false;
