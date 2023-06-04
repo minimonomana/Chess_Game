@@ -8,7 +8,7 @@ import pieces.Piece;
 public class Input extends MouseAdapter{
 
 	Board board;
-	ChessTimerGUI timer = new ChessTimerGUI(board, "");
+	ChessTimerGUI timer = new ChessTimerGUI(board, "","","");
 	
 	public Input(Board board) {
 		this.board = board;
@@ -29,20 +29,20 @@ public class Input extends MouseAdapter{
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
 		
-		if ((e.getX() > 9 * board.tileSize && e.getX() <= 9 * board.tileSize + 40 &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40) && (board.mode == 0 || board.mode == 1)) {
+		if ((e.getX() > 240 && e.getX() <= 400 &&  e.getY() >= 672 && e.getY() <= 772) && (board.mode == 0 || board.mode == 1)) {
 			board.undo();
 			timer.changeTimer(true);
 			board.repaint();
 		}
 
-		if ((e.getX() > 9 * board.tileSize + 40 && e.getX() <= 9 * board.tileSize + 80 &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40)) {
+		if ((e.getX() >  40 && e.getX() <= 200 &&  e.getY() >= 672 && e.getY() <= 772)) {
 			board.status = GameStatus.RESIGNATION;
 			System.out.println("Resign!");
 			board.win();
 			//board.repaint();
 		}
 
-		if ((e.getX() >= 9 * board.tileSize - 40 && e.getX() <= 9 * board.tileSize &&  e.getY() >= 4 * board.tileSize && e.getY() <= 4 * board.tileSize + 40)) {
+		if ((e.getX() >= 440 && e.getX() <= 600 &&  e.getY() >= 672 && e.getY() <= 772)) {
 			board.status = GameStatus.DRAW;
 			System.out.println("Offering a draw!");
 			board.win();
