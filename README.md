@@ -50,8 +50,11 @@ Here is an instance of Chess 960 game with white checkmated black:
 
 ![Chess 960](resources/notloser.png)
 
+Here is the demo video for our project:
+[LỳChess demo](https://www.youtube.com/watch?v=v4TVgKSJUFc)
+
 ## Authors
 - Nguyen Duc Trung (minimonomana)
-- Igor Kolegniskov (Spacmann)
+- Igor Kolegniskov (Spacmannn)
 - Phan Nguyen Tuan Anh (nico-tuananh)
 - Tran Hung Dat (Tho Sugoi)
