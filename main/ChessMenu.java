@@ -274,7 +274,7 @@ public class ChessMenu extends JFrame implements ActionListener {
 
             System.out.println("Game mode: " + command);
             Main chessGame = new Main();
-            chessGame.startGame(mode, command);
+            chessGame.startGame(mode, command, text1, text2);
         }
     }
 
