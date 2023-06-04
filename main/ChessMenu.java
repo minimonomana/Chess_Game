@@ -250,8 +250,8 @@ public class ChessMenu extends JFrame implements ActionListener {
 
         }
         if (command.equals("bullet")||command.equals("blizt")||command.equals("rapid")) {
-        	String text1 = "Player 1";
-        	String text2 = "Player 2";
+        	String text1 = "Black";
+        	String text2 = "White";
         	if (mode == 0) {
                 text1 = textField1.getText();
                 text2 = textField2.getText();
@@ -271,6 +271,9 @@ public class ChessMenu extends JFrame implements ActionListener {
 
             System.out.println("Player 1: " + text1);
             System.out.println("Player 2: " + text2);
+            if (text1.equals("")) text1 = "Black";
+            if (text2.equals("")) text2 = "White";
+
 
             System.out.println("Game mode: " + command);
             Main chessGame = new Main();

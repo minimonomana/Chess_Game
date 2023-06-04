@@ -10,14 +10,11 @@ import java.util.Stack;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JPanel;
 
 import pieces.*;
 
-
 public class Board extends JPanel{
-	
 	/**
 	 * 
 	 */
@@ -29,7 +26,6 @@ public class Board extends JPanel{
 	Players p2;
 	ChessTimerGUI timer;
 	int mode;
-
 	GameStatus status;
 
 	int[] fakeBlack;
@@ -95,7 +91,6 @@ public class Board extends JPanel{
 		// Adding Kings
 		pieceList.add(new King(this, 0, 4, false));
 		pieceList.add(new King(this, 7, 4, true));
-
 	}
 	
 	public void chess960Board() {
@@ -144,7 +139,6 @@ public class Board extends JPanel{
 		// Adding Kings
 		pieceList.add(new King(this, 0, arr[4], false));
 		pieceList.add(new King(this, 7, arr[4], true));
-
 	}
 
 	public void fakeChess(){
@@ -198,7 +192,6 @@ public class Board extends JPanel{
 		// Adding Kings
 		pieceList.add(new King(this, 0, 4, false));
 		pieceList.add(new King(this, 7, 4, true));
-
 	}
 
 	public void semiFakeChess(){
@@ -259,13 +252,12 @@ public class Board extends JPanel{
 		// Adding Kings
 		pieceList.add(new King(this, 0, 4, false));
 		pieceList.add(new King(this, 7, 4, true));
-
 	}
 	
 	ArrayList<Piece> pieceList = new ArrayList<>();
+	public Stack<Move> moveList = new Stack<Move>();
 	
 	Piece selectedpiece;
-	
 	Input input = new Input(this);
 	
 	public Piece get(int r, int c) {
@@ -276,8 +268,6 @@ public class Board extends JPanel{
 		}
 		return null;
 	}
-	
-	public Stack<Move> moveList = new Stack<Move>();
 	
 	public void move(Move m) {
 		if (m.capture != null){
@@ -435,7 +425,6 @@ public class Board extends JPanel{
 			rook.ypos = rook.row * tileSize;
 			rook.hasMoved = true;
 
-
 			if (mode == 2 || mode == 3){
 				pieceList.remove(rook);
 				Piece fakePiece = null;
@@ -481,10 +470,8 @@ public class Board extends JPanel{
 				}
 				pieceList.add(fakePiece);
 				fakePiece.hasFakeMoved = true;
-			}
-			
-		}
-		
+			}		
+		}		
 	}
 	
 	public void enPassant(Move m) {
@@ -639,7 +626,6 @@ public class Board extends JPanel{
 				return false;
 			}
 			return true;
-			// System.out.printf("%s %s can move from %d %d to %d %d\n", move.piece.iswhite ? "white" : "black", move.piece.name, move.piece.row, move.piece.col, move.newrow, move.newcol);
 		}
 		return false;
 	}
@@ -647,15 +633,12 @@ public class Board extends JPanel{
 	public boolean checkAttacked(int row, int col, boolean white) {
 
 		for (Piece piece: pieceList) {
-			// System.out.println(piece.name);
 			if (piece.iswhite != white) {
 				if (piece.canAttack(row, col)) {
 					return true;
 				}
 			}
-
 		}
-
 		return false;
 	}
 
@@ -703,29 +686,36 @@ public class Board extends JPanel{
 	public boolean win() {
 		if (this.status == GameStatus.RESIGNATION){
 			System.out.println(0);
-			this.status = p2.turn() ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
+			this.status = p1.turn() ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
 		}
 		else if (this.status == GameStatus.OFFER_A_DRAW){
 			System.out.println(1);
 			this.status = GameStatus.DRAW;
 		}
 
+		if (ChessTimerGUI.timer1 <= 0){
+			this.status = GameStatus.BLACK_WIN;
+		}
+		if (ChessTimerGUI.timer2 <= 0){
+			this.status = GameStatus.WHITE_WIN;
+		}
+
 		if (this.status == GameStatus.WHITE_WIN){
 			System.out.println("White win!");
 			timer.stopTimer();
-			new EndGameScreen(p1.turn(), GameStatus.WHITE_WIN);
+			new EndGameScreen(p1.turn(), GameStatus.WHITE_WIN, p1.name, p2.name);
 			return true;
 		}
 		else if (this.status == GameStatus.BLACK_WIN){
 			System.out.println("Black win!");
 			timer.stopTimer();
-			new EndGameScreen(p2.turn(), GameStatus.WHITE_WIN);
+			new EndGameScreen(p2.turn(), GameStatus.WHITE_WIN, p1.name, p2.name);
 			return true;
 		}
 		else if (this.status == GameStatus.DRAW){
 			System.out.println("Draw!");
 			timer.stopTimer();
-			new EndGameScreen(p1.turn(), GameStatus.DRAW);
+			new EndGameScreen(p1.turn(), GameStatus.DRAW, p1.name, p2.name);
 			return true;
 		}
 		return false;
@@ -739,8 +729,7 @@ public class Board extends JPanel{
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				g2d.setColor((i + j) % 2 == 0 ? new Color(100, 153, 76) : new Color(255, 235, 200));
-				g2d.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
-				
+				g2d.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);			
 			}
 		}
 		
@@ -760,7 +749,6 @@ public class Board extends JPanel{
 					}
 				}
 			}
-			// System.out.println();
 		}
 		
 		for (Piece piece: pieceList) {

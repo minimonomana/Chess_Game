@@ -14,7 +14,6 @@ public class Input extends MouseAdapter{
 		this.board = board;
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (board.selectedpiece != null) {
 			board.selectedpiece.xpos = e.getX() - board.tileSize / 2;
@@ -22,7 +21,6 @@ public class Input extends MouseAdapter{
 			
 			board.repaint();
 		}
-		
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -39,14 +37,12 @@ public class Input extends MouseAdapter{
 			board.status = GameStatus.RESIGNATION;
 			System.out.println("Resign!");
 			board.win();
-			//board.repaint();
 		}
 
 		if ((e.getX() >= 440 && e.getX() <= 600 &&  e.getY() >= 672 && e.getY() <= 772)) {
 			board.status = GameStatus.DRAW;
 			System.out.println("Offering a draw!");
 			board.win();
-			//board.repaint();
 		}
 		
 		if (board.selectedpiece != null) {
@@ -69,30 +65,23 @@ public class Input extends MouseAdapter{
 				board.selectedpiece = piecexy;
 			}
 		}
-		
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
-		
-		
-		
+				
 		Piece piecexy = board.get(row, col);
 		if (piecexy != null) {
 			board.selectedpiece = piecexy;
-		}
-		
+		}		
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 		int col = e.getX() / board.tileSize;
 		int row = e.getY() / board.tileSize;
-		
-		
+				
 		if (board.selectedpiece != null) {
 			Move m = new Move(board, board.selectedpiece, row, col);
 			if (board.isValidMove(m)) {
@@ -108,27 +97,17 @@ public class Input extends MouseAdapter{
 
 				if (m.piece.name.equals("Pawn") && ((m.piece.row == 0 && m.piece.iswhite) || (m.piece.row == 7 && !m.piece.iswhite))){
 					new PromotionPopup(board, m.piece.iswhite, m.piece.row, m.piece.col);
-					//promote.paint(getGraphics());
 					board.repaint();
-				}
-				
+				}			
 			}
 			else {
 				board.selectedpiece.xpos = board.selectedpiece.col * board.tileSize;
 				board.selectedpiece.ypos = board.selectedpiece.row * board.tileSize;
-			}
-			
-			
+			}			
 		}
 		
 		board.selectedpiece = null;
-		board.repaint();
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
+		board.repaint();		
 	}
 
 }

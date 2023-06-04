@@ -8,8 +8,4 @@ public enum GameStatus{
     STALEMATE,
     RESIGNATION,
     OFFER_A_DRAW;
-    
-    GameStatus(){
-		
-	}
 }
