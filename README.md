@@ -12,7 +12,7 @@ It strictly follow the Chess rules and have features:
 6. Sound effects.
 7. Chess variants, including Chess 960, Blindfold Chess and Advanced Blindfold Chess.
 
-![Fundamental inteface](resources\demo.png)
+![Fundamental inteface](resources/demo.png)
 
 ## Installation
 
@@ -41,14 +41,14 @@ To run Lychess on your local machine, please follow these steps:
     ```shell
     java ChessMenu
     ```
-![Main menu](resources\ChessMenu.png)
+![Main menu](resources/ChessMenu.png)
 
 - After that, your choose a mode you prefer, enter the name of two players, and start your game.
 
-![Inner menu](resources\innerMenu.png)
+![Inner menu](resources/innerMenu.png)
 Here is an instance of Chess 960 game with white checkmated black:
 
-![Chess 960](resources\notloser.png)
+![Chess 960](resources/notloser.png)
 
 ## Authors
 - Nguyen Duc Trung (minimonomana)
