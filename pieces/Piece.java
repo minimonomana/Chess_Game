@@ -24,6 +24,7 @@ public class Piece {
 	public static BufferedImage undoImage;
 	public static BufferedImage resignImage;
 	public static BufferedImage drawImage;
+	public static BufferedImage boardground;
 	{
 		try {
 			sheet = ImageIO.read(new File("resources\\piece.png"));
@@ -31,6 +32,8 @@ public class Piece {
 			undoImage = ImageIO.read(new File("resources\\undo.png"));
 			resignImage = ImageIO.read(new File("resources\\resign.png"));
 			drawImage = ImageIO.read(new File("resources\\draw.png"));
+			boardground = ImageIO.read(new File("resources\\background.png"));
+
 		}
 		catch(IOException e){
 			e.printStackTrace();
