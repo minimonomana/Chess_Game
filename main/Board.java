@@ -57,7 +57,7 @@ public class Board extends JPanel{
 
 		status = GameStatus.ACTIVE;
 		Sound.playSound("resources\\StartEndGame.wav");
-		timer = new ChessTimerGUI(this, "");
+		timer = new ChessTimerGUI(this, "","","");
 	
 		p1 = new Players(true);
 		p2 = new Players(false);
@@ -378,7 +378,7 @@ public class Board extends JPanel{
 	}
 	
 	public void undo() {
-		Sound.playSound("C:\\Users\\Admin\\eclipse-workspace\\ChessFromYoutube\\src\\res\\resources\\Move.wav");
+		Sound.playSound("resources\\Move.wav");
 		Move m = moveList.pop();
 		if (m.piece.name.equals("King")) {
 			if (Math.abs(m.newcol - m.oldcol) > 1) {
@@ -734,6 +734,7 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(Piece.boardground, 0, 0, 1200 , 836 , null);
 		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -742,13 +743,10 @@ public class Board extends JPanel{
 				
 			}
 		}
-		//g2d.setColor(Color.BLACK);
-		g2d.fillRect(9 * tileSize + 40, 4 * tileSize, tileSize - 40, tileSize - 40);
-		//g2d.setColor(Color.GREEN);
-		g2d.fillRect(9 * tileSize + 80, 4 * tileSize, tileSize - 40, tileSize - 40);
-		g2d.drawImage(Piece.undoImage, 9 * tileSize, 4 * tileSize, tileSize - 40, tileSize - 40, null);
-		g2d.drawImage(Piece.resignImage, 9 * tileSize + 40, 4 * tileSize, tileSize - 40, tileSize - 40, null);
-		g2d.drawImage(Piece.drawImage, 9 * tileSize - 40, 4 * tileSize, tileSize - 40, tileSize - 40, null);
+		
+		g2d.drawImage(Piece.undoImage, 240, 672, 160 , 100 , null);
+		g2d.drawImage(Piece.resignImage, 40, 672, 160, 100, null);
+		g2d.drawImage(Piece.drawImage, 440, 672, 160, 100, null);
 		
 		if (selectedpiece != null) {
 			
