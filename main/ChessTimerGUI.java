@@ -3,6 +3,10 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class ChessTimerGUI extends JPanel {
     static int timer1; // time for each player's timer
@@ -18,12 +22,15 @@ public class ChessTimerGUI extends JPanel {
     static JLabel labelTimer2;
     static Timer timer1Obj; // Timer objects to control the timing functionality
     static Timer timer2Obj;
+    static String name1 = "Player 1";
+    static String name2 = "Player 2";
 
     static Board board;
     static boolean canStart;
     
-    public ChessTimerGUI(Board board, String timeMode) {
-
+    public ChessTimerGUI(Board board, String timeMode, String t1, String t2) {
+    	if (!t1.equals("")) name1 = t1;
+    	if (!t2.equals("")) name2 = t2;
         if (timeMode.equals("bullet")) {
             timer1 = timer2 = 60;
         }
@@ -47,26 +54,26 @@ public class ChessTimerGUI extends JPanel {
         panel.setLayout(new GridBagLayout());
 
         // Create labels for timer display
-        labelTimer1 = new JLabel("Player 1: " + formatTime(timer1));
-        labelTimer1.setFont(new Font("Arial", Font.BOLD, 30));
+        labelTimer1 = new JLabel(name1 + ": " + formatTime(timer1));
+        labelTimer1.setFont(new Font("Arial", Font.BOLD, 60));
         labelTimer1.setOpaque(true);
         labelTimer1.setBackground(Color.BLACK);
         labelTimer1.setForeground(Color.WHITE);
 
-        labelTimer2 = new JLabel("Player 2: " + formatTime(timer2));
-        labelTimer2.setFont(new Font("Arial", Font.BOLD, 30));
+        labelTimer2 = new JLabel(name2 + ": " + formatTime(timer2));
+        labelTimer2.setFont(new Font("Arial", Font.BOLD, 60));
         labelTimer2.setOpaque(true);
         labelTimer2.setBackground(Color.BLACK);
         labelTimer2.setForeground(Color.WHITE);
 
-        // Create background panel
+        // Create a panel to hold the background image
         JPanel backgroundPanel = new JPanel();
         backgroundPanel.setLayout(new BorderLayout());
 
         // Create timers panel
         JPanel timersPanel = new JPanel();
-        timersPanel.setLayout(new GridLayout(2, 1, 0, 50));
-        timersPanel.setBackground(Color.BLACK);
+        timersPanel.setLayout(new GridLayout(2, 1, 0, 100));
+        //timersPanel.setBackground(Color.BLACK);
         timersPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         timersPanel.add(labelTimer1);
         timersPanel.add(labelTimer2);
@@ -77,8 +84,9 @@ public class ChessTimerGUI extends JPanel {
         add(panel, BorderLayout.CENTER);
 
         // Set panel properties
-        setPreferredSize(new Dimension(300, 200));
-        setBackground(new Color(53, 53, 53));
+        setPreferredSize(new Dimension(545, 200));
+        setBackground(new Color(232, 103, 103)); // Set the background color to red
+
     }
 
     // Automatically start Timer2 at the start of the game
@@ -90,7 +98,14 @@ public class ChessTimerGUI extends JPanel {
             timer1Obj.start();
         }
     }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
 
+        ImageIcon backgroundImage = new ImageIcon("resources//extrabackgound.png"); // Specify the path to your PNG image
+        g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), null);
+        System.out.println(true);
+    }
     // Formats the given time in minutes and seconds
     private String formatTime(int time) {
         int minutes = time / 60;
@@ -158,7 +173,8 @@ public class ChessTimerGUI extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if (canStart) {
                 time--;
-                label.setText(isTimer1Active ? "Player 1: \n" + formatTime(time) : "Player 2: \n" + formatTime(time));
+
+                label.setText(isTimer1Active ? name1 +": \n" + formatTime(time) : name2 +": \n" + formatTime(time));
 
                 // Set red background if player has less than 30 seconds less
                 if (time < 30) {
